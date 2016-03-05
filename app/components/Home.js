@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import HomeStore from '../stores/HomeStore';
 import HomeActions from '../actions/HomeActions';
+import PaymentForm from './PaymentForm';
 import {first, without, findWhere} from 'underscore';
 
 class Home extends React.Component {
@@ -28,12 +29,10 @@ class Home extends React.Component {
     return (
       <div className='container'>
         <div className="header-container">
-          <h1>Everybody Hates the Waiting Game</h1>
-          <h3>Enter your number.</h3>
-          <h3>Text us the minutes you want to wait.</h3>
-          <h3>Get a text alert when its time.</h3>
+          <h1>Payment Form</h1>
         </div>
         <div className='row'>
+          <PaymentForm />
         </div>
       </div>
     );

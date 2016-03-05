@@ -33,7 +33,7 @@ class Navbar extends React.Component {
             <span className='icon-bar'></span>
           </button>
           <Link to='/' className='navbar-brand'>
-            TXTWAR
+            Payment Site
           </Link>
         </div>
       </nav>

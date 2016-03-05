@@ -23,7 +23,7 @@ var HomeActions = function HomeActions() {
 
 exports.default = _alt2.default.createActions(HomeActions);
 
-},{"../alt":3,"underscore":"underscore"}],2:[function(require,module,exports){
+},{"../alt":4,"underscore":"underscore"}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -48,7 +48,54 @@ var NavbarActions = function NavbarActions() {
 
 exports.default = _alt2.default.createActions(NavbarActions);
 
-},{"../alt":3,"underscore":"underscore"}],3:[function(require,module,exports){
+},{"../alt":4,"underscore":"underscore"}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _underscore = require('underscore');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PaymentFormActions = function () {
+  function PaymentFormActions() {
+    _classCallCheck(this, PaymentFormActions);
+
+    this.generateActions('addClientTokenSuccess', 'addClientTokenFail');
+  }
+
+  _createClass(PaymentFormActions, [{
+    key: 'getClientToken',
+    value: function getClientToken() {
+      var _this = this;
+
+      $.ajax({
+        type: 'GET',
+        url: '/api/braintree/client_token'
+      }).done(function (data) {
+        _this.actions.addClientTokenSuccess(data);
+      }).fail(function (data) {
+        _this.actions.addClientTokenFail(data);
+      });
+    }
+  }]);
+
+  return PaymentFormActions;
+}();
+
+exports.default = _alt2.default.createActions(PaymentFormActions);
+
+},{"../alt":4,"underscore":"underscore"}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63,7 +110,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = new _alt2.default();
 
-},{"alt":"alt"}],4:[function(require,module,exports){
+},{"alt":"alt"}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -123,7 +170,7 @@ var App = function (_React$Component) {
 
 exports.default = App;
 
-},{"./Footer":5,"./Home":6,"./Navbar":7,"react":"react"}],5:[function(require,module,exports){
+},{"./Footer":6,"./Home":7,"./Navbar":8,"react":"react"}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -225,7 +272,7 @@ var Footer = function (_React$Component) {
 
 exports.default = Footer;
 
-},{"react":"react","react-router":"react-router"}],6:[function(require,module,exports){
+},{"react":"react","react-router":"react-router"}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -247,6 +294,10 @@ var _HomeStore2 = _interopRequireDefault(_HomeStore);
 var _HomeActions = require('../actions/HomeActions');
 
 var _HomeActions2 = _interopRequireDefault(_HomeActions);
+
+var _PaymentForm = require('./PaymentForm');
+
+var _PaymentForm2 = _interopRequireDefault(_PaymentForm);
 
 var _underscore = require('underscore');
 
@@ -298,25 +349,14 @@ var Home = function (_React$Component) {
           _react2.default.createElement(
             'h1',
             null,
-            'Everybody Hates the Waiting Game'
-          ),
-          _react2.default.createElement(
-            'h3',
-            null,
-            'Enter your number.'
-          ),
-          _react2.default.createElement(
-            'h3',
-            null,
-            'Text us the minutes you want to wait.'
-          ),
-          _react2.default.createElement(
-            'h3',
-            null,
-            'Get a text alert when its time.'
+            'Payment Form'
           )
         ),
-        _react2.default.createElement('div', { className: 'row' })
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(_PaymentForm2.default, null)
+        )
       );
     }
   }]);
@@ -326,7 +366,7 @@ var Home = function (_React$Component) {
 
 exports.default = Home;
 
-},{"../actions/HomeActions":1,"../stores/HomeStore":10,"react":"react","react-router":"react-router","underscore":"underscore"}],7:[function(require,module,exports){
+},{"../actions/HomeActions":1,"../stores/HomeStore":12,"./PaymentForm":9,"react":"react","react-router":"react-router","underscore":"underscore"}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -409,7 +449,7 @@ var Navbar = function (_React$Component) {
           _react2.default.createElement(
             _reactRouter.Link,
             { to: '/', className: 'navbar-brand' },
-            'TXTWAR'
+            'Payment Site'
           )
         )
       );
@@ -421,7 +461,106 @@ var Navbar = function (_React$Component) {
 
 exports.default = Navbar;
 
-},{"../actions/NavbarActions":2,"../stores/NavbarStore":11,"react":"react","react-router":"react-router"}],8:[function(require,module,exports){
+},{"../actions/NavbarActions":2,"../stores/NavbarStore":13,"react":"react","react-router":"react-router"}],9:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _PaymentFormStore = require('../stores/PaymentFormStore');
+
+var _PaymentFormStore2 = _interopRequireDefault(_PaymentFormStore);
+
+var _PaymentFormActions = require('../actions/PaymentFormActions');
+
+var _PaymentFormActions2 = _interopRequireDefault(_PaymentFormActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PaymentForm = function (_React$Component) {
+  _inherits(PaymentForm, _React$Component);
+
+  function PaymentForm(props) {
+    _classCallCheck(this, PaymentForm);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PaymentForm).call(this, props));
+
+    _this.state = _PaymentFormStore2.default.getState();
+    _this._onChange = _this._onChange.bind(_this);
+
+    return _this;
+  }
+
+  _createClass(PaymentForm, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      _PaymentFormStore2.default.listen(this._onChange);
+      _PaymentFormActions2.default.getClientToken();
+      console.log('braintree setup called');
+      window.braintree.setup(this.state.clientToken, "custom", { id: "checkout" });
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      _PaymentFormStore2.default.unlisten(this._onChange);
+    }
+  }, {
+    key: '_onChange',
+    value: function _onChange(state) {
+      this.setState(state);
+    }
+  }, {
+    key: '_handleSubmit',
+    value: function _handleSubmit(event) {
+      event.preventDefault();
+      var client = new window.braintree.api.Client({ clientToken: this.state.clientToken });
+      // do validations here or do the validations within the changed stated in react
+      debugger;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'paymentForm' },
+        _react2.default.createElement(
+          'form',
+          { className: 'paymentForm', id: 'checkout', onSubmit: this._handleSubmit.bind(this) },
+          _react2.default.createElement('input', { 'data-braintree-name': 'number', placeholder: '4111111111111111' }),
+          _react2.default.createElement('input', { 'data-braintree-name': 'cvv', placeholder: '100' }),
+          _react2.default.createElement('input', { 'data-braintree-name': 'expiration_date', placeholder: '10/20' }),
+          _react2.default.createElement('input', { 'data-braintree-name': 'expiration_month', placeholder: '10' }),
+          _react2.default.createElement('input', { 'data-braintree-name': 'expiration_year', placeholder: '2020' }),
+          _react2.default.createElement('input', { 'data-braintree-name': 'postal_code', placeholder: '94107' }),
+          _react2.default.createElement('input', { 'data-braintree-name': 'cardholder_name', placeholder: 'John Smith' }),
+          _react2.default.createElement('button', { type: 'submit', id: 'submit', value: 'Pay', onClick: this._handleSubmit.bind(this) })
+        ),
+        _react2.default.createElement('script', { src: 'https://js.braintreegateway.com/js/braintree-2.21.0.min.js' })
+      );
+    }
+  }]);
+
+  return PaymentForm;
+}(_react2.default.Component);
+
+exports.default = PaymentForm;
+
+},{"../actions/PaymentFormActions":3,"../stores/PaymentFormStore":14,"react":"react","react-router":"react-router"}],10:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -454,7 +593,7 @@ _reactDom2.default.render(_react2.default.createElement(
   _routes2.default
 ), document.getElementById('app'));
 
-},{"./routes":9,"history/lib/createBrowserHistory":20,"react":"react","react-dom":"react-dom","react-router":"react-router"}],9:[function(require,module,exports){
+},{"./routes":11,"history/lib/createBrowserHistory":23,"react":"react","react-dom":"react-dom","react-router":"react-router"}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -483,7 +622,7 @@ exports.default = _react2.default.createElement(
   _react2.default.createElement(_reactRouter.Route, { path: '/', component: _Home2.default })
 );
 
-},{"./components/App":4,"./components/Home":6,"react":"react","react-router":"react-router"}],10:[function(require,module,exports){
+},{"./components/App":5,"./components/Home":7,"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -510,7 +649,7 @@ var HomeStore = function HomeStore() {
 
 exports.default = _alt2.default.createStore(HomeStore);
 
-},{"../actions/HomeActions":1,"../alt":3}],11:[function(require,module,exports){
+},{"../actions/HomeActions":1,"../alt":4}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -602,7 +741,53 @@ var NavbarStore = function () {
 
 exports.default = _alt2.default.createStore(NavbarStore);
 
-},{"../actions/NavbarActions":2,"../alt":3}],12:[function(require,module,exports){
+},{"../actions/NavbarActions":2,"../alt":4}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _PaymentFormActions = require('../actions/PaymentFormActions');
+
+var _PaymentFormActions2 = _interopRequireDefault(_PaymentFormActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PaymentFormStore = function () {
+  function PaymentFormStore() {
+    _classCallCheck(this, PaymentFormStore);
+
+    this.bindActions(_PaymentFormActions2.default);
+    this.clientToken = '';
+  }
+
+  _createClass(PaymentFormStore, [{
+    key: 'onAddClientTokenSuccess',
+    value: function onAddClientTokenSuccess(data) {
+      this.clientToken = data;
+    }
+  }, {
+    key: 'onAddClientTokenFail',
+    value: function onAddClientTokenFail(data) {
+      toastr.error(data.responseText);
+    }
+  }]);
+
+  return PaymentFormStore;
+}();
+
+exports.default = _alt2.default.createStore(PaymentFormStore);
+
+},{"../actions/PaymentFormActions":3,"../alt":4}],15:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -698,7 +883,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":13,"./lib/keys.js":14}],13:[function(require,module,exports){
+},{"./lib/is_arguments.js":16,"./lib/keys.js":17}],16:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -720,7 +905,7 @@ function unsupported(object){
     false;
 };
 
-},{}],14:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -731,7 +916,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -763,7 +948,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],16:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -790,7 +975,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],17:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -862,7 +1047,7 @@ function readState(key) {
 }
 }).call(this,require('_process'))
 
-},{"_process":29,"warning":30}],18:[function(require,module,exports){
+},{"_process":32,"warning":33}],21:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -943,13 +1128,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],19:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],20:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1131,7 +1316,7 @@ exports['default'] = createBrowserHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./Actions":15,"./DOMStateStorage":17,"./DOMUtils":18,"./ExecutionEnvironment":19,"./createDOMHistory":21,"./parsePath":26,"_process":29,"invariant":28}],21:[function(require,module,exports){
+},{"./Actions":18,"./DOMStateStorage":20,"./DOMUtils":21,"./ExecutionEnvironment":22,"./createDOMHistory":24,"./parsePath":29,"_process":32,"invariant":31}],24:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1175,7 +1360,7 @@ exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./DOMUtils":18,"./ExecutionEnvironment":19,"./createHistory":22,"_process":29,"invariant":28}],22:[function(require,module,exports){
+},{"./DOMUtils":21,"./ExecutionEnvironment":22,"./createHistory":25,"_process":32,"invariant":31}],25:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -1467,7 +1652,7 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-},{"./Actions":15,"./AsyncUtils":16,"./createLocation":23,"./deprecate":24,"./parsePath":26,"./runTransitionHook":27,"deep-equal":12}],23:[function(require,module,exports){
+},{"./Actions":18,"./AsyncUtils":19,"./createLocation":26,"./deprecate":27,"./parsePath":29,"./runTransitionHook":30,"deep-equal":15}],26:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -1522,7 +1707,7 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-},{"./Actions":15,"./parsePath":26}],24:[function(require,module,exports){
+},{"./Actions":18,"./parsePath":29}],27:[function(require,module,exports){
 //import warning from 'warning'
 
 "use strict";
@@ -1538,7 +1723,7 @@ function deprecate(fn) {
 
 exports["default"] = deprecate;
 module.exports = exports["default"];
-},{}],25:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1552,7 +1737,7 @@ function extractPath(string) {
 
 exports["default"] = extractPath;
 module.exports = exports["default"];
-},{}],26:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1600,7 +1785,7 @@ exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./extractPath":25,"_process":29,"warning":30}],27:[function(require,module,exports){
+},{"./extractPath":28,"_process":32,"warning":33}],30:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1628,7 +1813,7 @@ exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"_process":29,"warning":30}],28:[function(require,module,exports){
+},{"_process":32,"warning":33}],31:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -1684,7 +1869,7 @@ module.exports = invariant;
 
 }).call(this,require('_process'))
 
-},{"_process":29}],29:[function(require,module,exports){
+},{"_process":32}],32:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -1777,7 +1962,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],30:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -1842,7 +2027,7 @@ module.exports = warning;
 
 }).call(this,require('_process'))
 
-},{"_process":29}]},{},[8])
+},{"_process":32}]},{},[10])
 
 
 //# sourceMappingURL=bundle.js.map
