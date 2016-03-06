@@ -5,7 +5,11 @@ class PaymentFormActions {
   constructor() {
     this.generateActions(
       'addClientTokenSuccess',
-      'addClientTokenFail'
+      'addClientTokenFail',
+      'updateCreditCardNumber',
+      'updateCVV',
+      'updateExpirationDate',
+      'updatePostalCode'
     );
   }
 
