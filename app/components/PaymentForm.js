@@ -50,8 +50,6 @@ class PaymentForm extends React.Component  {
 
   _formattedPaymentAmount(){
     var numStr = parseInt(this.state.paymentAmount).toString();
-    console.log("this is the component");
-    console.log(numStr);
     if (numStr == "0" || numStr == "00" ){
       return "";
     } else if (numStr.length == 1){
@@ -67,6 +65,7 @@ class PaymentForm extends React.Component  {
     event.preventDefault();
     var client = new window.braintree.api.Client({clientToken: this.state.clientToken});
     // do validations here or do the validations within the changed stated in react
+    
     client.tokenizeCard({
       number: "4111111111111111",
       expirationDate: "10/20"

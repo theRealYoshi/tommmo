@@ -551,8 +551,6 @@ var PaymentForm = function (_React$Component) {
     key: '_formattedPaymentAmount',
     value: function _formattedPaymentAmount() {
       var numStr = parseInt(this.state.paymentAmount).toString();
-      console.log("this is the component");
-      console.log(numStr);
       if (numStr == "0" || numStr == "00") {
         return "";
       } else if (numStr.length == 1) {
@@ -569,6 +567,7 @@ var PaymentForm = function (_React$Component) {
       event.preventDefault();
       var client = new window.braintree.api.Client({ clientToken: this.state.clientToken });
       // do validations here or do the validations within the changed stated in react
+
       client.tokenizeCard({
         number: "4111111111111111",
         expirationDate: "10/20"
@@ -906,7 +905,7 @@ var PaymentFormStore = function () {
     key: 'onUpdateCreditCardNumber',
     value: function onUpdateCreditCardNumber(event) {
       var cc = event.target.value.replace(/[^\d]/g, "");
-      if (isNaN(cc)) {
+      if (isNaN(cc) || cc == this.creditCardNumber) {
         toastr.error("Please enter numbers only");
       } else {
         this.creditCardNumber = cc;
@@ -916,7 +915,7 @@ var PaymentFormStore = function () {
     key: 'onUpdateCVV',
     value: function onUpdateCVV(event) {
       var cvv = event.target.value.replace(/[^\d]/g, "");
-      if (isNaN(cvv)) {
+      if (isNaN(cvv) || cvv == this.cvv) {
         toastr.error("Please enter numbers only");
       } else {
         this.cvv = cvv;
@@ -926,7 +925,7 @@ var PaymentFormStore = function () {
     key: 'onUpdateExpirationDate',
     value: function onUpdateExpirationDate(event) {
       var exp = event.target.value.replace(/[^\d]/g, "");
-      if (isNaN(exp)) {
+      if (isNaN(exp) || exp == this.expirationDate) {
         toastr.error("Please enter numbers only");
       } else {
         this.expirationDate = exp;
@@ -936,8 +935,6 @@ var PaymentFormStore = function () {
     key: 'onUpdatePaymentAmount',
     value: function onUpdatePaymentAmount(event) {
       var payment = parseInt(event.target.value.replace(/[^\d]/g, "")).toString();
-      console.log("this is the store");
-      console.log(payment);
       if (isNaN(payment)) {
         toastr.error("Please enter numbers only");
       } else {
@@ -948,7 +945,7 @@ var PaymentFormStore = function () {
     key: 'onUpdatePostalCode',
     value: function onUpdatePostalCode(event) {
       var pc = event.target.value.replace(/[^\d]/g, "");
-      if (isNaN(pc)) {
+      if (isNaN(pc) || pc == this.postalCode) {
         toastr.error("Please enter numbers only");
       } else {
         this.postalCode = pc;

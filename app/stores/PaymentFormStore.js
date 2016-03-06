@@ -22,7 +22,7 @@ class PaymentFormStore {
 
   onUpdateCreditCardNumber(event){
     var cc = event.target.value.replace(/[^\d]/g,"");
-    if(isNaN(cc)){
+    if(isNaN(cc) || cc == this.creditCardNumber){
       toastr.error("Please enter numbers only");
     } else {
       this.creditCardNumber = cc;
@@ -31,7 +31,7 @@ class PaymentFormStore {
 
   onUpdateCVV(event){
     var cvv = event.target.value.replace(/[^\d]/g,"");
-    if(isNaN(cvv)){
+    if(isNaN(cvv) || cvv == this.cvv){
       toastr.error("Please enter numbers only");
     } else {
       this.cvv = cvv;
@@ -40,7 +40,7 @@ class PaymentFormStore {
 
   onUpdateExpirationDate(event){
     var exp = event.target.value.replace(/[^\d]/g,"");
-    if(isNaN(exp)){
+    if(isNaN(exp) || exp == this.expirationDate){
       toastr.error("Please enter numbers only");
     } else {
       this.expirationDate = exp;
@@ -49,8 +49,6 @@ class PaymentFormStore {
 
   onUpdatePaymentAmount(event){
     var payment = parseInt(event.target.value.replace(/[^\d]/g,"")).toString();
-    console.log("this is the store");
-    console.log(payment);
     if(isNaN(payment)){
       toastr.error("Please enter numbers only");
     } else {
@@ -60,7 +58,7 @@ class PaymentFormStore {
 
   onUpdatePostalCode(event){
     var pc = event.target.value.replace(/[^\d]/g,"");
-    if(isNaN(pc)){
+    if(isNaN(pc) || pc == this.postalCode){
       toastr.error("Please enter numbers only");
     } else {
       this.postalCode = pc;
