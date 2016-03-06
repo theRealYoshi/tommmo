@@ -71,7 +71,7 @@ var PaymentFormActions = function () {
   function PaymentFormActions() {
     _classCallCheck(this, PaymentFormActions);
 
-    this.generateActions('addClientTokenSuccess', 'addClientTokenFail', 'updateCreditCardNumber', 'updateCVV', 'updateExpirationDate', 'updatePostalCode');
+    this.generateActions('addClientTokenSuccess', 'addClientTokenFail', 'updateCreditCardNumber', 'updateCVV', 'updateExpirationDate', 'updatePaymentAmount', 'updatePostalCode');
   }
 
   _createClass(PaymentFormActions, [{
@@ -529,9 +529,9 @@ var PaymentForm = function (_React$Component) {
       //regex for different formats and then add 000's until end
       if (numStr.length <= 4) {
         return numStr;
-      } else if (numStr.length > 4 && numStr.length < 8) {
+      } else if (numStr.length > 4 && numStr.length <= 8) {
         return numStr.slice(0, 4) + "-" + numStr.slice(4);
-      } else if (numStr.length >= 8 && numStr.length < 12) {
+      } else if (numStr.length > 8 && numStr.length <= 12) {
         return numStr.slice(0, 4) + "-" + numStr.slice(4, 8) + "-" + numStr.slice(8);
       } else {
         return numStr.slice(0, 4) + "-" + numStr.slice(4, 8) + "-" + numStr.slice(8, 12) + "-" + numStr.slice(12);
@@ -541,11 +541,21 @@ var PaymentForm = function (_React$Component) {
     key: '_formattedExpirationDate',
     value: function _formattedExpirationDate() {
       var numStr = this.state.expirationDate.toString();
-      console.log(numStr);
       if (numStr.length <= 2) {
         return numStr;
       } else {
         return numStr.slice(0, 2) + "/" + numStr.slice(2, 4);
+      }
+    }
+  }, {
+    key: '_formattedPaymentAmount',
+    value: function _formattedPaymentAmount() {
+      var numStr = this.state.paymentAmount.toString();
+      console.log(numStr);
+      if (numStr.length <= 2) {
+        return "$0." + numStr;
+      } else {
+        return "$" + numStr.slice(0, numStr.length - 2) + "." + numStr.slice(numStr.length - 2);
       }
     }
   }, {
@@ -566,7 +576,12 @@ var PaymentForm = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var creditCardNumber, expirationDate;
+      var creditCardNumber, expirationDate, paymentAmount;
+      if (this.state.paymentAmount) {
+        paymentAmount = this._formattedPaymentAmount();
+      } else {
+        paymentAmount = "";
+      }
       if (this.state.creditCardNumber) {
         creditCardNumber = this._formattedCreditCardNumber();
       } else {
@@ -585,24 +600,62 @@ var PaymentForm = function (_React$Component) {
         { className: 'paymentForm' },
         _react2.default.createElement(
           'form',
-          { className: 'paymentForm', id: 'checkout', onSubmit: this._handleSubmit.bind(this) },
+          { className: 'paymentForm', id: 'checkout', onSubmit: this._handleSubmit.bind(this), autoComplete: 'off' },
+          _react2.default.createElement(
+            'label',
+            null,
+            'Payment Amount:'
+          ),
+          _react2.default.createElement('input', { onChange: _PaymentFormActions2.default.updatePaymentAmount,
+            value: paymentAmount }),
+          _react2.default.createElement(
+            'label',
+            null,
+            'First Name:'
+          ),
+          _react2.default.createElement('input', { 'data-braintree-name': 'cardholder_name', placeholder: 'John' }),
+          _react2.default.createElement(
+            'label',
+            null,
+            'Last Name:'
+          ),
+          _react2.default.createElement('input', { 'data-braintree-name': 'cardholder_name', placeholder: 'Smith' }),
+          _react2.default.createElement(
+            'label',
+            null,
+            'Credit Card Number:'
+          ),
           _react2.default.createElement('input', { 'data-braintree-name': 'number', placeholder: '4111-1111-1111-1111',
             onChange: _PaymentFormActions2.default.updateCreditCardNumber,
             value: creditCardNumber,
             maxLength: '19' }),
+          _react2.default.createElement(
+            'label',
+            null,
+            'CVV:'
+          ),
           _react2.default.createElement('input', { 'data-braintree-name': 'cvv', placeholder: '100',
             onChange: _PaymentFormActions2.default.updateCVV,
             value: cvv,
             maxLength: '4' }),
+          _react2.default.createElement(
+            'label',
+            null,
+            'Expiration Date:'
+          ),
           _react2.default.createElement('input', { 'data-braintree-name': 'expiration_date', placeholder: '10/20',
             onChange: _PaymentFormActions2.default.updateExpirationDate,
             value: expirationDate,
             maxLength: '5' }),
+          _react2.default.createElement(
+            'label',
+            null,
+            'Postal Code:'
+          ),
           _react2.default.createElement('input', { 'data-braintree-name': 'postal_code', placeholder: '94107',
             onChange: _PaymentFormActions2.default.updatePostalCode,
             value: postalCode,
             maxLength: '5' }),
-          _react2.default.createElement('input', { 'data-braintree-name': 'cardholder_name', placeholder: 'John Smith' }),
           _react2.default.createElement(
             'button',
             { type: 'submit', id: 'submit', value: 'Pay', onClick: this._handleSubmit.bind(this) },
@@ -830,6 +883,7 @@ var PaymentFormStore = function () {
     this.creditCardNumber = '';
     this.cvv = '';
     this.expirationDate = '';
+    this.paymentAmount = '';
     this.postalCode = '';
   }
 
@@ -871,6 +925,16 @@ var PaymentFormStore = function () {
         toastr.error("Please enter numbers only");
       } else {
         this.expirationDate = exp;
+      }
+    }
+  }, {
+    key: 'onUpdatePaymentAmount',
+    value: function onUpdatePaymentAmount(event) {
+      var payment = event.target.value.replace(/[^\d]/g, "");
+      if (isNaN(payment)) {
+        toastr.error("Please enter numbers only");
+      } else {
+        this.paymentAmount = payment;
       }
     }
   }, {

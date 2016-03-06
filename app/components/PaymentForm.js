@@ -30,9 +30,9 @@ class PaymentForm extends React.Component  {
     //regex for different formats and then add 000's until end
     if (numStr.length <= 4){
       return numStr;
-    } else if (numStr.length > 4 && numStr.length < 8){
+    } else if (numStr.length > 4 && numStr.length <= 8){
       return numStr.slice(0,4) + "-" + numStr.slice(4);
-    } else if ( numStr.length >= 8 && numStr.length < 12) {
+    } else if ( numStr.length > 8 && numStr.length <= 12) {
       return numStr.slice(0,4) + "-" + numStr.slice(4,8) + "-" + numStr.slice(8);
     } else {
       return numStr.slice(0,4) + "-" + numStr.slice(4,8) + "-" + numStr.slice(8,12) + "-" + numStr.slice(12);
@@ -41,11 +41,20 @@ class PaymentForm extends React.Component  {
 
   _formattedExpirationDate() {
     var numStr = this.state.expirationDate.toString();
-    console.log(numStr);
     if (numStr.length <= 2){
       return numStr;
     } else {
       return numStr.slice(0,2) + "/" + numStr.slice(2,4);
+    }
+  }
+
+  _formattedPaymentAmount(){
+    var numStr = this.state.paymentAmount.toString();
+    console.log(numStr);
+    if (numStr.length <= 2){
+      return "$0." + numStr;
+    } else {
+      return "$" + numStr.slice(0,numStr.length - 2) + "." + numStr.slice(numStr.length - 2);
     }
   }
 
@@ -64,7 +73,12 @@ class PaymentForm extends React.Component  {
   }
 
   render() {
-    var creditCardNumber, expirationDate;
+    var creditCardNumber, expirationDate, paymentAmount;
+    if (this.state.paymentAmount){
+      paymentAmount = this._formattedPaymentAmount();
+    } else {
+      paymentAmount = "";
+    }
     if (this.state.creditCardNumber){
       creditCardNumber = this._formattedCreditCardNumber();
     } else {
@@ -80,28 +94,41 @@ class PaymentForm extends React.Component  {
 
     return (
         <div className="paymentForm">
-          <form className="paymentForm" id="checkout" onSubmit={this._handleSubmit.bind(this)}>
+
+          <form className="paymentForm" id="checkout" onSubmit={this._handleSubmit.bind(this)} autoComplete="off">
+            <label>Payment Amount:</label>
+            <input onChange={PaymentFormActions.updatePaymentAmount}
+              value={paymentAmount}/>
+
+            <label>First Name:</label>
+            <input data-braintree-name="cardholder_name" placeholder="John"/>
+
+            <label>Last Name:</label>
+            <input data-braintree-name="cardholder_name" placeholder="Smith"/>
+
+            <label>Credit Card Number:</label>
             <input data-braintree-name="number" placeholder="4111-1111-1111-1111"
               onChange={PaymentFormActions.updateCreditCardNumber}
               value={creditCardNumber}
               maxLength="19"/>
 
+            <label>CVV:</label>
             <input data-braintree-name="cvv" placeholder="100"
               onChange={PaymentFormActions.updateCVV}
               value={cvv}
               maxLength="4"/>
 
+            <label>Expiration Date:</label>
             <input data-braintree-name="expiration_date" placeholder="10/20"
               onChange={PaymentFormActions.updateExpirationDate}
               value={expirationDate}
               maxLength="5"/>
 
+            <label>Postal Code:</label>
             <input data-braintree-name="postal_code" placeholder="94107"
               onChange={PaymentFormActions.updatePostalCode}
               value={postalCode}
               maxLength="5"/>
-
-            <input data-braintree-name="cardholder_name" placeholder="John Smith"/>
 
             <button type="submit" id="submit" value="Pay" onClick={this._handleSubmit.bind(this)}>Pay</button>
           </form>

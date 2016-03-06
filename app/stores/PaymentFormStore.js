@@ -8,6 +8,7 @@ class PaymentFormStore {
     this.creditCardNumber = '';
     this.cvv = '';
     this.expirationDate = '';
+    this.paymentAmount = '';
     this.postalCode = '';
   }
 
@@ -43,6 +44,15 @@ class PaymentFormStore {
       toastr.error("Please enter numbers only");
     } else {
       this.expirationDate = exp;
+    }
+  }
+
+  onUpdatePaymentAmount(event){
+    var payment = event.target.value.replace(/[^\d]/g,"");
+    if(isNaN(payment)){
+      toastr.error("Please enter numbers only");
+    } else {
+      this.paymentAmount = payment;
     }
   }
 
