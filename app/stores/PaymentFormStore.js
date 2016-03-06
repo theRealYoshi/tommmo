@@ -8,6 +8,7 @@ class PaymentFormStore {
     this.creditCardNumber = '';
     this.cvv = '';
     this.expirationDate = '';
+    this.fullName = '';
     this.paymentAmount = '';
     this.postalCode = '';
   }
@@ -44,6 +45,25 @@ class PaymentFormStore {
       toastr.error("Please enter numbers only");
     } else {
       this.expirationDate = exp;
+    }
+  }
+
+  onUpdateFullName(event){
+    var name = event.target.value;
+    var notSpace = false;
+    if(name.match(/[\W+\d+]/g)){
+      var regExpArr = name.match(/[\W+\d+]/g);
+      // if not all spaces
+      regExpArr.forEach(function(nonLetter){
+        if (nonLetter != " "){
+          toastr.error("Please enter letters only");
+          notSpace = true;
+          return;
+        }
+      })
+    }
+    if(!notSpace){
+      this.fullName = name;
     }
   }
 

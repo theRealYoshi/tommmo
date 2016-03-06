@@ -71,7 +71,7 @@ var PaymentFormActions = function () {
   function PaymentFormActions() {
     _classCallCheck(this, PaymentFormActions);
 
-    this.generateActions('addClientTokenSuccess', 'addClientTokenFail', 'updateCreditCardNumber', 'updateCVV', 'updateExpirationDate', 'updatePaymentAmount', 'updatePostalCode');
+    this.generateActions('addClientTokenSuccess', 'addClientTokenFail', 'updateCreditCardNumber', 'updateCVV', 'updateExpirationDate', 'updateFullName', 'updatePaymentAmount', 'updatePostalCode');
   }
 
   _createClass(PaymentFormActions, [{
@@ -565,17 +565,32 @@ var PaymentForm = function (_React$Component) {
     key: '_handleSubmit',
     value: function _handleSubmit(event) {
       event.preventDefault();
-      var client = new window.braintree.api.Client({ clientToken: this.state.clientToken });
       // do validations here or do the validations within the changed stated in react
+      var paymentAmount = this.state.paymentAmount;
+      var name = this.state.fullName;
+      var creditCardNumber = this.state.creditCardNumber;
+      var cvv = this.state.cvv;
+      var expirationDate = this.state.expirationDate;
+      var postalCode = this.state.postalCode;
 
-      client.tokenizeCard({
-        number: "4111111111111111",
-        expirationDate: "10/20"
-      }, function (err, nonce) {
-        console.log(nonce);
-        // Send nonce to your server
-      });
-      debugger;
+      if (name.length != 2) {
+        toastr.error("Please enter a valid name. Ex. First Last");
+      }
+      // if any of these fail
+      if (paymentAmount == ("0" || "") || creditCardNumber.length < 16 || cvv.length < 3 || expirationDate.length < 4 || postalCode.length < 5) {
+        console.log("fail");
+        // send a toastr error
+        debugger;
+      } else {
+        var client = new window.braintree.api.Client({ clientToken: this.state.clientToken });
+        client.tokenizeCard({
+          number: "4111111111111111",
+          expirationDate: "10/20"
+        }, function (err, nonce) {
+          console.log(nonce);
+          // Send nonce to your server
+        });
+      }
     }
   }, {
     key: 'render',
@@ -586,6 +601,7 @@ var PaymentForm = function (_React$Component) {
       } else {
         paymentAmount = "";
       }
+      var fullName = this.state.fullName;
       if (this.state.creditCardNumber) {
         creditCardNumber = this._formattedCreditCardNumber();
       } else {
@@ -615,15 +631,11 @@ var PaymentForm = function (_React$Component) {
           _react2.default.createElement(
             'label',
             null,
-            'First Name:'
+            'Full Name:'
           ),
-          _react2.default.createElement('input', { 'data-braintree-name': 'cardholder_name', placeholder: 'John' }),
-          _react2.default.createElement(
-            'label',
-            null,
-            'Last Name:'
-          ),
-          _react2.default.createElement('input', { 'data-braintree-name': 'cardholder_name', placeholder: 'Smith' }),
+          _react2.default.createElement('input', { 'data-braintree-name': 'cardholder_name', placeholder: 'John Smith',
+            onChange: _PaymentFormActions2.default.updateFullName,
+            value: fullName }),
           _react2.default.createElement(
             'label',
             null,
@@ -887,6 +899,7 @@ var PaymentFormStore = function () {
     this.creditCardNumber = '';
     this.cvv = '';
     this.expirationDate = '';
+    this.fullName = '';
     this.paymentAmount = '';
     this.postalCode = '';
   }
@@ -929,6 +942,26 @@ var PaymentFormStore = function () {
         toastr.error("Please enter numbers only");
       } else {
         this.expirationDate = exp;
+      }
+    }
+  }, {
+    key: 'onUpdateFullName',
+    value: function onUpdateFullName(event) {
+      var name = event.target.value;
+      var notSpace = false;
+      if (name.match(/[\W+\d+]/g)) {
+        var regExpArr = name.match(/[\W+\d+]/g);
+        // if not all spaces
+        regExpArr.forEach(function (nonLetter) {
+          if (nonLetter != " ") {
+            toastr.error("Please enter letters only");
+            notSpace = true;
+            return;
+          }
+        });
+      }
+      if (!notSpace) {
+        this.fullName = name;
       }
     }
   }, {

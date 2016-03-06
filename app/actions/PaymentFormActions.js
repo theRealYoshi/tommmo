@@ -9,6 +9,7 @@ class PaymentFormActions {
       'updateCreditCardNumber',
       'updateCVV',
       'updateExpirationDate',
+      'updateFullName',
       'updatePaymentAmount',
       'updatePostalCode'
     );

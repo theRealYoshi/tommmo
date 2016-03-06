@@ -63,17 +63,32 @@ class PaymentForm extends React.Component  {
 
   _handleSubmit(event) {
     event.preventDefault();
-    var client = new window.braintree.api.Client({clientToken: this.state.clientToken});
     // do validations here or do the validations within the changed stated in react
-    
-    client.tokenizeCard({
-      number: "4111111111111111",
-      expirationDate: "10/20"
-    }, function (err, nonce) {
-      console.log(nonce);
-      // Send nonce to your server
-    });
-    debugger;
+    var paymentAmount = this.state.paymentAmount;
+    var name = this.state.fullName;
+    var creditCardNumber = this.state.creditCardNumber;
+    var cvv = this.state.cvv;
+    var expirationDate = this.state.expirationDate;
+    var postalCode = this.state.postalCode;
+
+    if (name.length != 2){
+      toastr.error("Please enter a valid name. Ex. First Last");
+    }
+    // if any of these fail
+    if (paymentAmount == ("0" || "") || creditCardNumber.length < 16 || cvv.length < 3 || expirationDate.length < 4 || postalCode.length < 5){
+      console.log("fail");
+      // send a toastr error
+      debugger;
+    } else {
+      var client = new window.braintree.api.Client({clientToken: this.state.clientToken});
+      client.tokenizeCard({
+        number: "4111111111111111",
+        expirationDate: "10/20"
+      }, function (err, nonce) {
+        console.log(nonce);
+        // Send nonce to your server
+      });
+    }
   }
 
   render() {
@@ -83,6 +98,7 @@ class PaymentForm extends React.Component  {
     } else {
       paymentAmount = "";
     }
+    var fullName = this.state.fullName;
     if (this.state.creditCardNumber){
       creditCardNumber = this._formattedCreditCardNumber();
     } else {
@@ -104,11 +120,10 @@ class PaymentForm extends React.Component  {
             <input onChange={PaymentFormActions.updatePaymentAmount}
               value={paymentAmount}/>
 
-            <label>First Name:</label>
-            <input data-braintree-name="cardholder_name" placeholder="John"/>
-
-            <label>Last Name:</label>
-            <input data-braintree-name="cardholder_name" placeholder="Smith"/>
+            <label>Full Name:</label>
+            <input data-braintree-name="cardholder_name" placeholder="John Smith"
+              onChange={PaymentFormActions.updateFullName}
+              value={fullName}/>
 
             <label>Credit Card Number:</label>
             <input data-braintree-name="number" placeholder="4111-1111-1111-1111"
