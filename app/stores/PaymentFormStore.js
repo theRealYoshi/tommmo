@@ -48,7 +48,9 @@ class PaymentFormStore {
   }
 
   onUpdatePaymentAmount(event){
-    var payment = event.target.value.replace(/[^\d]/g,"");
+    var payment = parseInt(event.target.value.replace(/[^\d]/g,"")).toString();
+    console.log("this is the store");
+    console.log(payment);
     if(isNaN(payment)){
       toastr.error("Please enter numbers only");
     } else {

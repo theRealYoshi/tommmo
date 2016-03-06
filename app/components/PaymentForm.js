@@ -49,9 +49,14 @@ class PaymentForm extends React.Component  {
   }
 
   _formattedPaymentAmount(){
-    var numStr = this.state.paymentAmount.toString();
+    var numStr = parseInt(this.state.paymentAmount).toString();
+    console.log("this is the component");
     console.log(numStr);
-    if (numStr.length <= 2){
+    if (numStr == "0" || numStr == "00" ){
+      return "";
+    } else if (numStr.length == 1){
+      return "$0.0" + numStr;
+    } else if (numStr.length == 2){
       return "$0." + numStr;
     } else {
       return "$" + numStr.slice(0,numStr.length - 2) + "." + numStr.slice(numStr.length - 2);
