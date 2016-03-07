@@ -21,6 +21,10 @@ class PaymentFormStore {
     toastr.error(data.responseText);
   }
 
+  onFormValidationError(data){
+    toastr.error(data);
+  }
+
   onUpdateCreditCardNumber(event){
     var cc = event.target.value.replace(/[^\d]/g,"");
     if(isNaN(cc) || cc == this.creditCardNumber){

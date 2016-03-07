@@ -11,11 +11,25 @@ class PaymentFormActions {
       'updateExpirationDate',
       'updateFullName',
       'updatePaymentAmount',
-      'updatePostalCode'
+      'updatePostalCode',
+      'formValidationError'
     );
   }
 
   getClientToken(){
+    $.ajax({
+      type: 'GET',
+      url: '/api/braintree/client_token'
+    })
+    .done((data) => {
+      this.actions.addClientTokenSuccess(data);
+    })
+    .fail((data) => {
+      this.actions.addClientTokenFail(data);
+    });
+  }
+
+  createTransaction(data){
     $.ajax({
       type: 'GET',
       url: '/api/braintree/client_token'

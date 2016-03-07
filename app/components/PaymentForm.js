@@ -72,35 +72,38 @@ class PaymentForm extends React.Component  {
     var fullName = this.state.fullName;
     var postalCode = this.state.postalCode;
 
-    // if any of these fail
-    // make this a case statement
-    var data = "";
     if (paymentAmount == ("0" || "")){
       console.log("payment failed");
+      PaymentFormActions.formValidationError("Payment Amount Invalid");
     } else if (fullName.length < 5 || fullName.split(" ").length != 2){
       console.log("fullname failed");
-
+      PaymentFormActions.formValidationError("Please Enter a Valid Name");
     } else if (creditCardNumber.length < 16){
       console.log("cc failed");
-
+      PaymentFormActions.formValidationError("Please Enter a Valid Credit Card Number");
     } else if (cvv.length < 3){
       console.log("cvv failed");
-
+      PaymentFormActions.formValidationError("Please Enter a Valid CVV");
     } else if (expirationDate.length < 4){
       console.log("exp failed");
-
+      PaymentFormActions.formValidationError("Please Enter a Valid Expiration Date");
     } else if (postalCode.length < 5){
       console.log("postal failed");
-
+      PaymentFormActions.formValidationError("Please Enter a Valid Postal Code");
     } else {
-      console.log("nonce creating")
       var client = new window.braintree.api.Client({clientToken: this.state.clientToken});
       client.tokenizeCard({
-        number: "4111111111111111",
-        expirationDate: "10/20"
+        number: creditCardNumber / 100,
+        cardholderName: name,
+        expirationDate: expirationDate.slice(0,2) + "/" + expirationDate.slice(2),
+        cvv: cvv,
+        billingAddress: {
+          postalCode: postalCode
+        }
       }, function (err, nonce) {
         console.log(nonce);
         console.log("nonce created");
+        
         // Send nonce to your server
       });
     }
