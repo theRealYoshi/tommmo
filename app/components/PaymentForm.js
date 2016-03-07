@@ -69,23 +69,38 @@ class PaymentForm extends React.Component  {
     var creditCardNumber = this.state.creditCardNumber;
     var cvv = this.state.cvv;
     var expirationDate = this.state.expirationDate;
+    var fullName = this.state.fullName;
     var postalCode = this.state.postalCode;
 
-    if (name.length != 2){
-      toastr.error("Please enter a valid name. Ex. First Last");
-    }
     // if any of these fail
-    if (paymentAmount == ("0" || "") || creditCardNumber.length < 16 || cvv.length < 3 || expirationDate.length < 4 || postalCode.length < 5){
-      console.log("fail");
-      // send a toastr error
-      debugger;
+    // make this a case statement
+    var data = "";
+    if (paymentAmount == ("0" || "")){
+      console.log("payment failed");
+    } else if (fullName.length < 5 || fullName.split(" ").length != 2){
+      console.log("fullname failed");
+
+    } else if (creditCardNumber.length < 16){
+      console.log("cc failed");
+
+    } else if (cvv.length < 3){
+      console.log("cvv failed");
+
+    } else if (expirationDate.length < 4){
+      console.log("exp failed");
+
+    } else if (postalCode.length < 5){
+      console.log("postal failed");
+
     } else {
+      console.log("nonce creating")
       var client = new window.braintree.api.Client({clientToken: this.state.clientToken});
       client.tokenizeCard({
         number: "4111111111111111",
         expirationDate: "10/20"
       }, function (err, nonce) {
         console.log(nonce);
+        console.log("nonce created");
         // Send nonce to your server
       });
     }
