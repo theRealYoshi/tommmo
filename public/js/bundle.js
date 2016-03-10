@@ -90,16 +90,19 @@ var PaymentFormActions = function () {
     }
   }, {
     key: 'createTransaction',
-    value: function createTransaction(data) {
-      var _this2 = this;
-
+    value: function createTransaction(payload) {
       $.ajax({
-        type: 'GET',
-        url: '/api/braintree/client_token'
+        type: 'POST',
+        url: '/api/braintree/transaction',
+        data: {
+          amount: payload.amount,
+          nonce: payload.nonce
+        }
       }).done(function (data) {
-        _this2.actions.addClientTokenSuccess(data);
+        console.log("success");
+        console.log(data);
       }).fail(function (data) {
-        _this2.actions.addClientTokenFail(data);
+        console.log("fail");
       });
     }
   }]);
@@ -617,10 +620,14 @@ var PaymentForm = function (_React$Component) {
             postalCode: postalCode
           }
         }, function (err, nonce) {
+          // add error handler
           console.log(nonce);
           console.log("nonce created");
-
           // Send nonce to your server
+          _PaymentFormActions2.default.createTransaction({
+            amount: paymentAmount,
+            nonce: nonce
+          });
         });
       }
     }

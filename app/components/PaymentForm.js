@@ -101,10 +101,14 @@ class PaymentForm extends React.Component  {
           postalCode: postalCode
         }
       }, function (err, nonce) {
+        // add error handler
         console.log(nonce);
         console.log("nonce created");
-        
         // Send nonce to your server
+        PaymentFormActions.createTransaction({
+            amount: paymentAmount,
+            nonce: nonce
+        });
       });
     }
   }

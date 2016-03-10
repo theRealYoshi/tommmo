@@ -29,16 +29,21 @@ class PaymentFormActions {
     });
   }
 
-  createTransaction(data){
+  createTransaction(payload){
     $.ajax({
-      type: 'GET',
-      url: '/api/braintree/client_token'
+      type: 'POST',
+      url: '/api/braintree/transaction',
+      data: {
+              amount: payload.amount,
+              nonce: payload.nonce
+            }
     })
     .done((data) => {
-      this.actions.addClientTokenSuccess(data);
+      console.log("success");
+      console.log(data);
     })
     .fail((data) => {
-      this.actions.addClientTokenFail(data);
+      console.log("fail");
     });
   }
 

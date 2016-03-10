@@ -40,6 +40,22 @@ app.get("/api/braintree/client_token", function (req, res) {
   });
 });
 
+app.post("/api/braintree/transaction",function (req, res) {
+  var amount = req.body.amount / 100;
+  var nonceFromTheClient = "fake-valid-visa-nonce";
+  // var nonceFromTheClient = req.body.nonce;
+  gateway.transaction.sale({
+    amount: amount,
+    paymentMethodNonce: nonceFromTheClient,
+    options: {
+      submitForSettlement: true
+    }
+  }, function (err, result) {
+    console.log(result);
+    res.send(200);
+  });
+});
+
 app.use(function(req, res) {
   Router.match({ routes: routes.default, location: req.url }, function(err, redirectLocation, renderProps) {
     if (err) {
