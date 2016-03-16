@@ -6,6 +6,8 @@ class PaymentFormActions {
     this.generateActions(
       'addClientTokenSuccess',
       'addClientTokenFail',
+      'addCreateTransactionSuccess',
+      'addCreateTransactionFail',
       'updateCreditCardNumber',
       'updateCVV',
       'updateExpirationDate',
@@ -40,10 +42,12 @@ class PaymentFormActions {
     })
     .done((data) => {
       console.log("success");
-      console.log(data);
+      this.actions.addCreateTransactionSuccess(data);
+      // set success parameters. Redirect?
     })
     .fail((data) => {
       console.log("fail");
+      this.actions.addCreateTransactionFail(data);
     });
   }
 

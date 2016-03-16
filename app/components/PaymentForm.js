@@ -99,7 +99,8 @@ class PaymentForm extends React.Component  {
         cvv: cvv,
         billingAddress: {
           postalCode: postalCode
-        }
+        },
+        paymentInstrumentType: "credit_card"
       }, function (err, nonce) {
         // add error handler
         console.log(nonce);
@@ -108,6 +109,8 @@ class PaymentForm extends React.Component  {
         PaymentFormActions.createTransaction({
             amount: paymentAmount,
             nonce: nonce
+        }, function(err, success){
+          // redirect here
         });
       });
     }

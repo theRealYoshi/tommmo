@@ -21,6 +21,22 @@ class PaymentFormStore {
     toastr.error(data.responseText);
   }
 
+  onAddCreateTransactionSuccess(data){
+    console.log(data);
+    // remove the cc info from state;
+    this.clientToken = '';
+    this.creditCardNumber = '';
+    this.cvv = '';
+    this.expirationDate = '';
+    this.fullName = '';
+    this.paymentAmount = '';
+    this.postalCode = '';
+  }
+
+  onAddCreateTransactionFail(data){
+    toastr.error(data.responseText);
+  }
+
   onFormValidationError(data){
     toastr.error(data);
   }

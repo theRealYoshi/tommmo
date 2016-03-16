@@ -71,7 +71,7 @@ var PaymentFormActions = function () {
   function PaymentFormActions() {
     _classCallCheck(this, PaymentFormActions);
 
-    this.generateActions('addClientTokenSuccess', 'addClientTokenFail', 'updateCreditCardNumber', 'updateCVV', 'updateExpirationDate', 'updateFullName', 'updatePaymentAmount', 'updatePostalCode', 'formValidationError');
+    this.generateActions('addClientTokenSuccess', 'addClientTokenFail', 'addCreateTransactionSuccess', 'addCreateTransactionFail', 'updateCreditCardNumber', 'updateCVV', 'updateExpirationDate', 'updateFullName', 'updatePaymentAmount', 'updatePostalCode', 'formValidationError');
   }
 
   _createClass(PaymentFormActions, [{
@@ -91,6 +91,8 @@ var PaymentFormActions = function () {
   }, {
     key: 'createTransaction',
     value: function createTransaction(payload) {
+      var _this2 = this;
+
       $.ajax({
         type: 'POST',
         url: '/api/braintree/transaction',
@@ -100,9 +102,11 @@ var PaymentFormActions = function () {
         }
       }).done(function (data) {
         console.log("success");
-        console.log(data);
+        _this2.actions.addCreateTransactionSuccess(data);
+        // set success parameters. Redirect?
       }).fail(function (data) {
         console.log("fail");
+        _this2.actions.addCreateTransactionFail(data);
       });
     }
   }]);
@@ -618,7 +622,8 @@ var PaymentForm = function (_React$Component) {
           cvv: cvv,
           billingAddress: {
             postalCode: postalCode
-          }
+          },
+          paymentInstrumentType: "credit_card"
         }, function (err, nonce) {
           // add error handler
           console.log(nonce);
@@ -627,6 +632,8 @@ var PaymentForm = function (_React$Component) {
           _PaymentFormActions2.default.createTransaction({
             amount: paymentAmount,
             nonce: nonce
+          }, function (err, success) {
+            // redirect here
           });
         });
       }
@@ -951,6 +958,24 @@ var PaymentFormStore = function () {
   }, {
     key: 'onAddClientTokenFail',
     value: function onAddClientTokenFail(data) {
+      toastr.error(data.responseText);
+    }
+  }, {
+    key: 'onAddCreateTransactionSuccess',
+    value: function onAddCreateTransactionSuccess(data) {
+      console.log(data);
+      // remove the cc info from state;
+      this.clientToken = '';
+      this.creditCardNumber = '';
+      this.cvv = '';
+      this.expirationDate = '';
+      this.fullName = '';
+      this.paymentAmount = '';
+      this.postalCode = '';
+    }
+  }, {
+    key: 'onAddCreateTransactionFail',
+    value: function onAddCreateTransactionFail(data) {
       toastr.error(data.responseText);
     }
   }, {

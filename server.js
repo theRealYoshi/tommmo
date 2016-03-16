@@ -42,17 +42,23 @@ app.get("/api/braintree/client_token", function (req, res) {
 
 app.post("/api/braintree/transaction",function (req, res) {
   var amount = req.body.amount / 100;
-  var nonceFromTheClient = "fake-valid-visa-nonce";
-  // var nonceFromTheClient = req.body.nonce;
+  // var nonceFromTheClient = "fake-valid-visa-nonce";
+  var nonceFromTheClient = req.body.nonce;
+  console.log(nonceFromTheClient);
   gateway.transaction.sale({
     amount: amount,
     paymentMethodNonce: nonceFromTheClient,
     options: {
-      submitForSettlement: true
+      submitForSettlement: true,
     }
   }, function (err, result) {
     console.log(result);
-    res.send(200);
+    if (!err && result.success){
+      res.status(200).send(result.transaction.amount + " was charged");
+    } else {
+      console.log(result.message);
+      res.status(406).send(result.message);
+    }
   });
 });
 
