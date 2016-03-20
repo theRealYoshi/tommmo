@@ -40,6 +40,14 @@ app.get("/api/braintree/client_token", function (req, res) {
   });
 });
 
+app.post("/api/braintree/paymentNonce", function(req, res){
+  debugger;
+  console.log(req);
+  var nonce = req.body.payment_method_nonce;
+  console.log(nonce);
+  res.status(200).send("nonce created");
+})
+
 app.post("/api/braintree/transaction",function (req, res) {
   var amount = req.body.amount / 100;
   // var nonceFromTheClient = "fake-valid-visa-nonce";

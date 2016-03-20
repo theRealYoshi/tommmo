@@ -9,12 +9,10 @@ class PaymentForm extends React.Component  {
     super(props);
     this.state = PaymentFormStore.getState();
     this._onChange = this._onChange.bind(this);
-
   }
 
   componentDidMount() {
     PaymentFormStore.listen(this._onChange);
-    PaymentFormActions.getClientToken();
   }
 
   componentWillUnmount() {
@@ -71,6 +69,7 @@ class PaymentForm extends React.Component  {
     var expirationDate = this.state.expirationDate;
     var fullName = this.state.fullName;
     var postalCode = this.state.postalCode;
+    var nonce = this.state.nonce;
 
     if (paymentAmount == ("0" || "")){
       console.log("payment failed");
@@ -90,8 +89,11 @@ class PaymentForm extends React.Component  {
     } else if (postalCode.length < 5){
       console.log("postal failed");
       PaymentFormActions.formValidationError("Please Enter a Valid Postal Code");
+    } else if (!nonce){
+      console.log("nonce failed");
+      PaymentFormActions.formValidationError("Please Enter a Valid Credit Card");
     } else {
-      var client = new window.braintree.api.Client({clientToken: this.state.clientToken});
+      // var client = new window.braintree.api.Client({clientToken: this.state.clientToken});
       client.tokenizeCard({
         number: creditCardNumber / 100,
         cardholderName: name,
@@ -139,7 +141,6 @@ class PaymentForm extends React.Component  {
 
     return (
         <div className="paymentForm">
-
           <form className="paymentForm" id="checkout" onSubmit={this._handleSubmit.bind(this)} autoComplete="off">
             <label>Payment Amount:</label>
             <input onChange={PaymentFormActions.updatePaymentAmount}
@@ -176,7 +177,6 @@ class PaymentForm extends React.Component  {
 
             <button type="submit" id="submit" value="Pay" onClick={this._handleSubmit.bind(this)}>Pay</button>
           </form>
-          <script src="https://js.braintreegateway.com/js/braintree-2.21.0.min.js"></script>
         </div>
     );
   }

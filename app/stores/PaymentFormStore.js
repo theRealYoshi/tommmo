@@ -4,27 +4,18 @@ import PaymentFormActions from '../actions/PaymentFormActions';
 class PaymentFormStore {
   constructor() {
     this.bindActions(PaymentFormActions);
-    this.clientToken = '';
     this.creditCardNumber = '';
     this.cvv = '';
     this.expirationDate = '';
     this.fullName = '';
     this.paymentAmount = '';
     this.postalCode = '';
-  }
-
-  onAddClientTokenSuccess(data){
-    this.clientToken = data;
-  }
-
-  onAddClientTokenFail(data){
-    toastr.error(data.responseText);
+    this.nonce = '';
   }
 
   onAddCreateTransactionSuccess(data){
     console.log(data);
     // remove the cc info from state;
-    this.clientToken = '';
     this.creditCardNumber = '';
     this.cvv = '';
     this.expirationDate = '';
@@ -35,6 +26,11 @@ class PaymentFormStore {
 
   onAddCreateTransactionFail(data){
     toastr.error(data.responseText);
+  }
+
+  onAddPaymentNonce(nonce){
+    this.nonce = nonce;
+    console.log("nonce added");
   }
 
   onFormValidationError(data){

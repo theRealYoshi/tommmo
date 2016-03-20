@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import HomeStore from '../stores/HomeStore';
 import HomeActions from '../actions/HomeActions';
+import PaymentFormNonce from './PaymentFormNonce';
 import PaymentForm from './PaymentForm';
 import {first, without, findWhere} from 'underscore';
 
@@ -30,6 +31,9 @@ class Home extends React.Component {
       <div className='container'>
         <div className="header-container">
           <h1>Payment Form</h1>
+        </div>
+        <div className='row'>
+          <PaymentFormNonce />
         </div>
         <div className='row'>
           <PaymentForm />

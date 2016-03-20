@@ -23,7 +23,7 @@ var HomeActions = function HomeActions() {
 
 exports.default = _alt2.default.createActions(HomeActions);
 
-},{"../alt":4,"underscore":"underscore"}],2:[function(require,module,exports){
+},{"../alt":5,"underscore":"underscore"}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -48,7 +48,7 @@ var NavbarActions = function NavbarActions() {
 
 exports.default = _alt2.default.createActions(NavbarActions);
 
-},{"../alt":4,"underscore":"underscore"}],3:[function(require,module,exports){
+},{"../alt":5,"underscore":"underscore"}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -71,27 +71,13 @@ var PaymentFormActions = function () {
   function PaymentFormActions() {
     _classCallCheck(this, PaymentFormActions);
 
-    this.generateActions('addClientTokenSuccess', 'addClientTokenFail', 'addCreateTransactionSuccess', 'addCreateTransactionFail', 'updateCreditCardNumber', 'updateCVV', 'updateExpirationDate', 'updateFullName', 'updatePaymentAmount', 'updatePostalCode', 'formValidationError');
+    this.generateActions('addCreateTransactionSuccess', 'addCreateTransactionFail', 'updateCreditCardNumber', 'updateCVV', 'updateExpirationDate', 'updateFullName', 'updatePaymentAmount', 'updatePostalCode', 'formValidationError', "addPaymentNonce");
   }
 
   _createClass(PaymentFormActions, [{
-    key: 'getClientToken',
-    value: function getClientToken() {
-      var _this = this;
-
-      $.ajax({
-        type: 'GET',
-        url: '/api/braintree/client_token'
-      }).done(function (data) {
-        _this.actions.addClientTokenSuccess(data);
-      }).fail(function (data) {
-        _this.actions.addClientTokenFail(data);
-      });
-    }
-  }, {
     key: 'createTransaction',
     value: function createTransaction(payload) {
-      var _this2 = this;
+      var _this = this;
 
       $.ajax({
         type: 'POST',
@@ -102,11 +88,11 @@ var PaymentFormActions = function () {
         }
       }).done(function (data) {
         console.log("success");
-        _this2.actions.addCreateTransactionSuccess(data);
+        _this.actions.addCreateTransactionSuccess(data);
         // set success parameters. Redirect?
       }).fail(function (data) {
         console.log("fail");
-        _this2.actions.addCreateTransactionFail(data);
+        _this.actions.addCreateTransactionFail(data);
       });
     }
   }]);
@@ -116,7 +102,56 @@ var PaymentFormActions = function () {
 
 exports.default = _alt2.default.createActions(PaymentFormActions);
 
-},{"../alt":4,"underscore":"underscore"}],4:[function(require,module,exports){
+},{"../alt":5,"underscore":"underscore"}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _underscore = require('underscore');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PaymentFormNonceActions = function () {
+  function PaymentFormNonceActions() {
+    _classCallCheck(this, PaymentFormNonceActions);
+
+    this.generateActions("addClientTokenSuccess", "addClientTokenFail");
+  }
+
+  _createClass(PaymentFormNonceActions, [{
+    key: 'getClientToken',
+    value: function getClientToken(setupDropinContainer) {
+      var _this = this;
+
+      $.ajax({
+        type: 'GET',
+        url: '/api/braintree/client_token'
+      }).done(function (clientToken) {
+        _this.actions.addClientTokenSuccess(clientToken);
+        setupDropinContainer(clientToken);
+      }).fail(function (data) {
+        _this.actions.addClientTokenFail(data);
+        console.log("this did not work");
+      });
+    }
+  }]);
+
+  return PaymentFormNonceActions;
+}();
+
+exports.default = _alt2.default.createActions(PaymentFormNonceActions);
+
+},{"../alt":5,"underscore":"underscore"}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -131,7 +166,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = new _alt2.default();
 
-},{"alt":"alt"}],5:[function(require,module,exports){
+},{"alt":"alt"}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -191,7 +226,7 @@ var App = function (_React$Component) {
 
 exports.default = App;
 
-},{"./Footer":6,"./Home":7,"./Navbar":8,"react":"react"}],6:[function(require,module,exports){
+},{"./Footer":7,"./Home":8,"./Navbar":9,"react":"react"}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -293,7 +328,7 @@ var Footer = function (_React$Component) {
 
 exports.default = Footer;
 
-},{"react":"react","react-router":"react-router"}],7:[function(require,module,exports){
+},{"react":"react","react-router":"react-router"}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -315,6 +350,10 @@ var _HomeStore2 = _interopRequireDefault(_HomeStore);
 var _HomeActions = require('../actions/HomeActions');
 
 var _HomeActions2 = _interopRequireDefault(_HomeActions);
+
+var _PaymentFormNonce = require('./PaymentFormNonce');
+
+var _PaymentFormNonce2 = _interopRequireDefault(_PaymentFormNonce);
 
 var _PaymentForm = require('./PaymentForm');
 
@@ -376,6 +415,11 @@ var Home = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { className: 'row' },
+          _react2.default.createElement(_PaymentFormNonce2.default, null)
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
           _react2.default.createElement(_PaymentForm2.default, null)
         )
       );
@@ -387,7 +431,7 @@ var Home = function (_React$Component) {
 
 exports.default = Home;
 
-},{"../actions/HomeActions":1,"../stores/HomeStore":12,"./PaymentForm":9,"react":"react","react-router":"react-router","underscore":"underscore"}],8:[function(require,module,exports){
+},{"../actions/HomeActions":1,"../stores/HomeStore":14,"./PaymentForm":10,"./PaymentFormNonce":11,"react":"react","react-router":"react-router","underscore":"underscore"}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -482,7 +526,7 @@ var Navbar = function (_React$Component) {
 
 exports.default = Navbar;
 
-},{"../actions/NavbarActions":2,"../stores/NavbarStore":13,"react":"react","react-router":"react-router"}],9:[function(require,module,exports){
+},{"../actions/NavbarActions":2,"../stores/NavbarStore":15,"react":"react","react-router":"react-router"}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -523,7 +567,6 @@ var PaymentForm = function (_React$Component) {
 
     _this.state = _PaymentFormStore2.default.getState();
     _this._onChange = _this._onChange.bind(_this);
-
     return _this;
   }
 
@@ -531,7 +574,6 @@ var PaymentForm = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       _PaymentFormStore2.default.listen(this._onChange);
-      _PaymentFormActions2.default.getClientToken();
     }
   }, {
     key: 'componentWillUnmount',
@@ -594,6 +636,7 @@ var PaymentForm = function (_React$Component) {
       var expirationDate = this.state.expirationDate;
       var fullName = this.state.fullName;
       var postalCode = this.state.postalCode;
+      var nonce = this.state.nonce;
 
       if (paymentAmount == ("0" || "")) {
         console.log("payment failed");
@@ -613,8 +656,11 @@ var PaymentForm = function (_React$Component) {
       } else if (postalCode.length < 5) {
         console.log("postal failed");
         _PaymentFormActions2.default.formValidationError("Please Enter a Valid Postal Code");
+      } else if (!nonce) {
+        console.log("nonce failed");
+        _PaymentFormActions2.default.formValidationError("Please Enter a Valid Credit Card");
       } else {
-        var client = new window.braintree.api.Client({ clientToken: this.state.clientToken });
+        // var client = new window.braintree.api.Client({clientToken: this.state.clientToken});
         client.tokenizeCard({
           number: creditCardNumber / 100,
           cardholderName: name,
@@ -723,8 +769,7 @@ var PaymentForm = function (_React$Component) {
             { type: 'submit', id: 'submit', value: 'Pay', onClick: this._handleSubmit.bind(this) },
             'Pay'
           )
-        ),
-        _react2.default.createElement('script', { src: 'https://js.braintreegateway.com/js/braintree-2.21.0.min.js' })
+        )
       );
     }
   }]);
@@ -734,7 +779,109 @@ var PaymentForm = function (_React$Component) {
 
 exports.default = PaymentForm;
 
-},{"../actions/PaymentFormActions":3,"../stores/PaymentFormStore":14,"react":"react","react-router":"react-router"}],10:[function(require,module,exports){
+},{"../actions/PaymentFormActions":3,"../stores/PaymentFormStore":17,"react":"react","react-router":"react-router"}],11:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _PaymentFormNonceStore = require('../stores/PaymentFormNonceStore');
+
+var _PaymentFormNonceStore2 = _interopRequireDefault(_PaymentFormNonceStore);
+
+var _PaymentFormNonceActions = require('../actions/PaymentFormNonceActions');
+
+var _PaymentFormNonceActions2 = _interopRequireDefault(_PaymentFormNonceActions);
+
+var _PaymentFormActions = require('../actions/PaymentFormActions');
+
+var _PaymentFormActions2 = _interopRequireDefault(_PaymentFormActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PaymentFormNonce = function (_React$Component) {
+  _inherits(PaymentFormNonce, _React$Component);
+
+  function PaymentFormNonce(props) {
+    _classCallCheck(this, PaymentFormNonce);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PaymentFormNonce).call(this, props));
+
+    _this.state = _PaymentFormNonceStore2.default.getState();
+    _this._onChange = _this._onChange.bind(_this);
+
+    return _this;
+  }
+
+  _createClass(PaymentFormNonce, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      _PaymentFormNonceStore2.default.listen(this._onChange);
+      _PaymentFormNonceActions2.default.getClientToken(function (clientToken) {
+        window.braintree.setup(clientToken, "dropin", {
+          container: "payment-form",
+          onPaymentMethodReceived: function onPaymentMethodReceived(obj) {
+            var nonce = obj.nonce;
+            if (nonce) {
+              console.log(obj.nonce);
+              _PaymentFormActions2.default.addPaymentNonce(obj.nonce);
+            }
+          }
+        });
+      });
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      _PaymentFormNonceStore2.default.unlisten(this._onChange);
+    }
+  }, {
+    key: '_onChange',
+    value: function _onChange(state) {
+      this.setState(state);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'div',
+          { className: 'paymentFormNonce' },
+          _react2.default.createElement(
+            'form',
+            { id: 'checkout' },
+            _react2.default.createElement('div', { id: 'payment-form' }),
+            _react2.default.createElement('input', { type: 'submit', value: 'Pay' })
+          )
+        ),
+        _react2.default.createElement('script', { src: 'https://js.braintreegateway.com/js/braintree-2.21.0.min.js' })
+      );
+    }
+  }]);
+
+  return PaymentFormNonce;
+}(_react2.default.Component);
+
+exports.default = PaymentFormNonce;
+
+},{"../actions/PaymentFormActions":3,"../actions/PaymentFormNonceActions":4,"../stores/PaymentFormNonceStore":16,"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -767,7 +914,7 @@ _reactDom2.default.render(_react2.default.createElement(
   _routes2.default
 ), document.getElementById('app'));
 
-},{"./routes":11,"history/lib/createBrowserHistory":23,"react":"react","react-dom":"react-dom","react-router":"react-router"}],11:[function(require,module,exports){
+},{"./routes":13,"history/lib/createBrowserHistory":26,"react":"react","react-dom":"react-dom","react-router":"react-router"}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -796,7 +943,7 @@ exports.default = _react2.default.createElement(
   _react2.default.createElement(_reactRouter.Route, { path: '/', component: _Home2.default })
 );
 
-},{"./components/App":5,"./components/Home":7,"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
+},{"./components/App":6,"./components/Home":8,"react":"react","react-router":"react-router"}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -823,7 +970,7 @@ var HomeStore = function HomeStore() {
 
 exports.default = _alt2.default.createStore(HomeStore);
 
-},{"../actions/HomeActions":1,"../alt":4}],13:[function(require,module,exports){
+},{"../actions/HomeActions":1,"../alt":5}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -915,7 +1062,60 @@ var NavbarStore = function () {
 
 exports.default = _alt2.default.createStore(NavbarStore);
 
-},{"../actions/NavbarActions":2,"../alt":4}],14:[function(require,module,exports){
+},{"../actions/NavbarActions":2,"../alt":5}],16:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _PaymentFormNonceActions = require('../actions/PaymentFormNonceActions');
+
+var _PaymentFormNonceActions2 = _interopRequireDefault(_PaymentFormNonceActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PaymentFormNonceStore = function () {
+  function PaymentFormNonceStore() {
+    _classCallCheck(this, PaymentFormNonceStore);
+
+    this.bindActions(_PaymentFormNonceActions2.default);
+    this.clientToken = '';
+    this.nonce = '';
+  }
+
+  _createClass(PaymentFormNonceStore, [{
+    key: 'onAddClientTokenSuccess',
+    value: function onAddClientTokenSuccess(data) {
+      this.clientToken = data;
+    }
+  }, {
+    key: 'onAddClientTokenFail',
+    value: function onAddClientTokenFail(data) {
+      toastr.error(data.responseText);
+    }
+  }, {
+    key: 'onAddPaymentNonce',
+    value: function onAddPaymentNonce(nonce) {
+      this.nonce = nonce;
+      console.log("nonce added");
+    }
+  }]);
+
+  return PaymentFormNonceStore;
+}();
+
+exports.default = _alt2.default.createStore(PaymentFormNonceStore);
+
+},{"../actions/PaymentFormNonceActions":4,"../alt":5}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -941,31 +1141,20 @@ var PaymentFormStore = function () {
     _classCallCheck(this, PaymentFormStore);
 
     this.bindActions(_PaymentFormActions2.default);
-    this.clientToken = '';
     this.creditCardNumber = '';
     this.cvv = '';
     this.expirationDate = '';
     this.fullName = '';
     this.paymentAmount = '';
     this.postalCode = '';
+    this.nonce = '';
   }
 
   _createClass(PaymentFormStore, [{
-    key: 'onAddClientTokenSuccess',
-    value: function onAddClientTokenSuccess(data) {
-      this.clientToken = data;
-    }
-  }, {
-    key: 'onAddClientTokenFail',
-    value: function onAddClientTokenFail(data) {
-      toastr.error(data.responseText);
-    }
-  }, {
     key: 'onAddCreateTransactionSuccess',
     value: function onAddCreateTransactionSuccess(data) {
       console.log(data);
       // remove the cc info from state;
-      this.clientToken = '';
       this.creditCardNumber = '';
       this.cvv = '';
       this.expirationDate = '';
@@ -977,6 +1166,12 @@ var PaymentFormStore = function () {
     key: 'onAddCreateTransactionFail',
     value: function onAddCreateTransactionFail(data) {
       toastr.error(data.responseText);
+    }
+  }, {
+    key: 'onAddPaymentNonce',
+    value: function onAddPaymentNonce(nonce) {
+      this.nonce = nonce;
+      console.log("nonce added");
     }
   }, {
     key: 'onFormValidationError',
@@ -1060,7 +1255,7 @@ var PaymentFormStore = function () {
 
 exports.default = _alt2.default.createStore(PaymentFormStore);
 
-},{"../actions/PaymentFormActions":3,"../alt":4}],15:[function(require,module,exports){
+},{"../actions/PaymentFormActions":3,"../alt":5}],18:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -1156,7 +1351,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":16,"./lib/keys.js":17}],16:[function(require,module,exports){
+},{"./lib/is_arguments.js":19,"./lib/keys.js":20}],19:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -1178,7 +1373,7 @@ function unsupported(object){
     false;
 };
 
-},{}],17:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -1189,7 +1384,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],18:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -1221,7 +1416,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],19:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1248,7 +1443,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],20:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -1320,7 +1515,7 @@ function readState(key) {
 }
 }).call(this,require('_process'))
 
-},{"_process":32,"warning":33}],21:[function(require,module,exports){
+},{"_process":35,"warning":36}],24:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1401,13 +1596,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],22:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],23:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1589,7 +1784,7 @@ exports['default'] = createBrowserHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./Actions":18,"./DOMStateStorage":20,"./DOMUtils":21,"./ExecutionEnvironment":22,"./createDOMHistory":24,"./parsePath":29,"_process":32,"invariant":31}],24:[function(require,module,exports){
+},{"./Actions":21,"./DOMStateStorage":23,"./DOMUtils":24,"./ExecutionEnvironment":25,"./createDOMHistory":27,"./parsePath":32,"_process":35,"invariant":34}],27:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1633,7 +1828,7 @@ exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./DOMUtils":21,"./ExecutionEnvironment":22,"./createHistory":25,"_process":32,"invariant":31}],25:[function(require,module,exports){
+},{"./DOMUtils":24,"./ExecutionEnvironment":25,"./createHistory":28,"_process":35,"invariant":34}],28:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -1925,7 +2120,7 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-},{"./Actions":18,"./AsyncUtils":19,"./createLocation":26,"./deprecate":27,"./parsePath":29,"./runTransitionHook":30,"deep-equal":15}],26:[function(require,module,exports){
+},{"./Actions":21,"./AsyncUtils":22,"./createLocation":29,"./deprecate":30,"./parsePath":32,"./runTransitionHook":33,"deep-equal":18}],29:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -1980,7 +2175,7 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-},{"./Actions":18,"./parsePath":29}],27:[function(require,module,exports){
+},{"./Actions":21,"./parsePath":32}],30:[function(require,module,exports){
 //import warning from 'warning'
 
 "use strict";
@@ -1996,7 +2191,7 @@ function deprecate(fn) {
 
 exports["default"] = deprecate;
 module.exports = exports["default"];
-},{}],28:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2010,7 +2205,7 @@ function extractPath(string) {
 
 exports["default"] = extractPath;
 module.exports = exports["default"];
-},{}],29:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2058,7 +2253,7 @@ exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./extractPath":28,"_process":32,"warning":33}],30:[function(require,module,exports){
+},{"./extractPath":31,"_process":35,"warning":36}],33:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2086,7 +2281,7 @@ exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"_process":32,"warning":33}],31:[function(require,module,exports){
+},{"_process":35,"warning":36}],34:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -2142,7 +2337,7 @@ module.exports = invariant;
 
 }).call(this,require('_process'))
 
-},{"_process":32}],32:[function(require,module,exports){
+},{"_process":35}],35:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -2235,7 +2430,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],33:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -2300,7 +2495,7 @@ module.exports = warning;
 
 }).call(this,require('_process'))
 
-},{"_process":32}]},{},[10])
+},{"_process":35}]},{},[12])
 
 
 //# sourceMappingURL=bundle.js.map

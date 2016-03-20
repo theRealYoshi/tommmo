@@ -4,8 +4,6 @@ import {assign} from 'underscore';
 class PaymentFormActions {
   constructor() {
     this.generateActions(
-      'addClientTokenSuccess',
-      'addClientTokenFail',
       'addCreateTransactionSuccess',
       'addCreateTransactionFail',
       'updateCreditCardNumber',
@@ -14,21 +12,9 @@ class PaymentFormActions {
       'updateFullName',
       'updatePaymentAmount',
       'updatePostalCode',
-      'formValidationError'
+      'formValidationError',
+      "addPaymentNonce"
     );
-  }
-
-  getClientToken(){
-    $.ajax({
-      type: 'GET',
-      url: '/api/braintree/client_token'
-    })
-    .done((data) => {
-      this.actions.addClientTokenSuccess(data);
-    })
-    .fail((data) => {
-      this.actions.addClientTokenFail(data);
-    });
   }
 
   createTransaction(payload){
