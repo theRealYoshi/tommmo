@@ -481,12 +481,12 @@ var Home = function (_React$Component) {
         ),
         _react2.default.createElement(
           'button',
-          { type: 'button', className: 'btn btn-primary btn-lg', 'data-toggle': 'modal', 'data-target': '#refundPolicyModal' },
+          { type: 'button', className: 'btn btn-primary', 'data-toggle': 'modal', 'data-target': '#refundPolicyModal' },
           'Refund Policy'
         ),
         _react2.default.createElement(
           'button',
-          { type: 'button', className: 'btn btn-primary btn-lg', 'data-toggle': 'modal', 'data-target': '#privacyPolicyModal' },
+          { type: 'button', className: 'btn btn-primary', 'data-toggle': 'modal', 'data-target': '#privacyPolicyModal' },
           'Privacy Policy'
         ),
         _react2.default.createElement(
@@ -513,13 +513,33 @@ var Home = function (_React$Component) {
                 _react2.default.createElement(
                   'h4',
                   { className: 'modal-title', id: 'refundPolicyLabel' },
-                  'Modal title'
+                  'Refund Policy'
                 )
               ),
               _react2.default.createElement(
                 'div',
                 { className: 'modal-body' },
-                '...'
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'You can cancel your service at any time. There are no cancellation fees, though no refunds are provided for services previously rendered.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'Any project cancelled mid-project will be charged a prorated amount based on the number of hours worked on that specific project.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'For more information regarding the refund policy, please contact us at ',
+                  _react2.default.createElement(
+                    'a',
+                    { href: 'mailto:support@tommmo.com' },
+                    'support@tommmo.com'
+                  ),
+                  ' or at 323-375-4476'
+                )
               ),
               _react2.default.createElement(
                 'div',
@@ -528,11 +548,6 @@ var Home = function (_React$Component) {
                   'button',
                   { type: 'button', className: 'btn btn-default', 'data-dismiss': 'modal' },
                   'Close'
-                ),
-                _react2.default.createElement(
-                  'button',
-                  { type: 'button', className: 'btn btn-primary' },
-                  'Save changes'
                 )
               )
             )
@@ -562,13 +577,199 @@ var Home = function (_React$Component) {
                 _react2.default.createElement(
                   'h4',
                   { className: 'modal-title', id: 'privacyPolicyModal' },
-                  'Modal title'
+                  'Privacy Policy'
                 )
               ),
               _react2.default.createElement(
                 'div',
                 { className: 'modal-body' },
-                '...'
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'Last updated: March 21, 2016'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'Tommmo Consulting ("us", "we", or "our") operates the www.tommmo.com website (the "Service").'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'This page informs you of our policies regarding the collection, use and disclosure of Personal Information when you use our Service.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'We will not use or share your information with anyone except as described in this Privacy Policy.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'We use your Personal Information for providing and improving the Service. By using the Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, accessible at www.tommmo.com'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'strong',
+                    null,
+                    'Information Collection And Use'
+                  )
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'While using our Service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'strong',
+                    null,
+                    'Log Data'
+                  )
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'We collect information that your browser sends whenever you visit our Service ("Log Data"). This Log Data may include information such as your computers Internet Protocol ("IP") address, browser type, browser version, the pages of our Service that you visit, the time and date of your visit, the time spent on those pages and other statistics.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'strong',
+                    null,
+                    'Cookies'
+                  )
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'Cookies are files with small amount of data, which may include an anonymous unique identifier. Cookies are sent to your browser from a web site and stored on your computers hard drive.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'We use ',
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    'cookies'
+                  ),
+                  ' to collect information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our Service.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'strong',
+                    null,
+                    'Service Providers'
+                  )
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'We may employ third party companies and individuals to facilitate our Service, to provide the Service on our behalf, to perform Service-related services or to assist us in analyzing how our Service is used.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'These third parties have access to your Personal Information only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'strong',
+                    null,
+                    'Security'
+                  )
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'The security of your Personal Information is important to us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Information, we cannot guarantee its absolute security.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'strong',
+                    null,
+                    'Links To Other Sites'
+                  )
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'Our Service may contain links to other sites that are not operated by us. If you click on a third party link, you will be directed to that third partys site. We strongly advise you to review the Privacy Policy of every site you visit.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'We have no control over, and assume no responsibility for the content, privacy policies or practices of any third party sites or services.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'strong',
+                    null,
+                    'Childrens Privacy'
+                  )
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'Our Service does not address anyone under the age of 13 ("Children").'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'We do not knowingly collect personally identifiable information from children under 13. If you are a parent or guardian and you are aware that your Children has provided us with Personal Information, please contact us. If we discover that a Children under 13 has provided us with Personal Information, we will delete such information from our servers immediately.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'strong',
+                    null,
+                    'Changes To This Privacy Policy'
+                  )
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'strong',
+                    null,
+                    'Contact Us'
+                  )
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'If you have any questions about this Privacy Policy, please contact us at ',
+                  _react2.default.createElement(
+                    'a',
+                    { href: 'mailto:support@tommmo.com' },
+                    'support@tommmo.com'
+                  )
+                )
               ),
               _react2.default.createElement(
                 'div',
@@ -577,11 +778,6 @@ var Home = function (_React$Component) {
                   'button',
                   { type: 'button', className: 'btn btn-default', 'data-dismiss': 'modal' },
                   'Close'
-                ),
-                _react2.default.createElement(
-                  'button',
-                  { type: 'button', className: 'btn btn-primary' },
-                  'Save changes'
                 )
               )
             )
