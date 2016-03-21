@@ -16,10 +16,7 @@ class PaymentFormNonceStore {
     toastr.error(data.responseText);
   }
 
-  onAddPaymentNonce(nonce){
-    this.nonce = nonce;
-    console.log("nonce added");
-  }
+  
 }
 
 export default alt.createStore(PaymentFormNonceStore);

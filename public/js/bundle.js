@@ -76,7 +76,7 @@ var PaymentFormActions = function () {
 
   _createClass(PaymentFormActions, [{
     key: 'createTransaction',
-    value: function createTransaction(payload) {
+    value: function createTransaction(payload, cb) {
       var _this = this;
 
       $.ajax({
@@ -87,8 +87,8 @@ var PaymentFormActions = function () {
           nonce: payload.nonce
         }
       }).done(function (data) {
-        console.log("success");
         _this.actions.addCreateTransactionSuccess(data);
+        cb();
         // set success parameters. Redirect?
       }).fail(function (data) {
         console.log("fail");
@@ -631,9 +631,6 @@ var PaymentForm = function (_React$Component) {
       // do validations here or do the validations within the changed stated in react
       var paymentAmount = this.state.paymentAmount;
       var name = this.state.fullName;
-      var creditCardNumber = this.state.creditCardNumber;
-      var cvv = this.state.cvv;
-      var expirationDate = this.state.expirationDate;
       var fullName = this.state.fullName;
       var postalCode = this.state.postalCode;
       var nonce = this.state.nonce;
@@ -644,15 +641,6 @@ var PaymentForm = function (_React$Component) {
       } else if (fullName.length < 5 || fullName.split(" ").length != 2) {
         console.log("fullname failed");
         _PaymentFormActions2.default.formValidationError("Please Enter a Valid Name");
-      } else if (creditCardNumber.length < 16) {
-        console.log("cc failed");
-        _PaymentFormActions2.default.formValidationError("Please Enter a Valid Credit Card Number");
-      } else if (cvv.length < 3) {
-        console.log("cvv failed");
-        _PaymentFormActions2.default.formValidationError("Please Enter a Valid CVV");
-      } else if (expirationDate.length < 4) {
-        console.log("exp failed");
-        _PaymentFormActions2.default.formValidationError("Please Enter a Valid Expiration Date");
       } else if (postalCode.length < 5) {
         console.log("postal failed");
         _PaymentFormActions2.default.formValidationError("Please Enter a Valid Postal Code");
@@ -660,51 +648,24 @@ var PaymentForm = function (_React$Component) {
         console.log("nonce failed");
         _PaymentFormActions2.default.formValidationError("Please Enter a Valid Credit Card");
       } else {
-        // var client = new window.braintree.api.Client({clientToken: this.state.clientToken});
-        client.tokenizeCard({
-          number: creditCardNumber / 100,
-          cardholderName: name,
-          expirationDate: expirationDate.slice(0, 2) + "/" + expirationDate.slice(2),
-          cvv: cvv,
-          billingAddress: {
-            postalCode: postalCode
-          },
-          paymentInstrumentType: "credit_card"
-        }, function (err, nonce) {
-          // add error handler
-          console.log(nonce);
-          console.log("nonce created");
-          // Send nonce to your server
-          _PaymentFormActions2.default.createTransaction({
-            amount: paymentAmount,
-            nonce: nonce
-          }, function (err, success) {
-            // redirect here
-          });
+        _PaymentFormActions2.default.createTransaction({
+          amount: paymentAmount,
+          nonce: nonce
+        }, function (err, success) {
+          console.log("done");
         });
       }
     }
   }, {
     key: 'render',
     value: function render() {
-      var creditCardNumber, expirationDate, paymentAmount;
+      var paymentAmount;
       if (this.state.paymentAmount) {
         paymentAmount = this._formattedPaymentAmount();
       } else {
         paymentAmount = "";
       }
       var fullName = this.state.fullName;
-      if (this.state.creditCardNumber) {
-        creditCardNumber = this._formattedCreditCardNumber();
-      } else {
-        creditCardNumber = "";
-      }
-      var cvv = this.state.cvv;
-      if (this.state.expirationDate) {
-        expirationDate = this._formattedExpirationDate();
-      } else {
-        expirationDate = "";
-      }
       var postalCode = this.state.postalCode;
 
       return _react2.default.createElement(
@@ -728,33 +689,6 @@ var PaymentForm = function (_React$Component) {
           _react2.default.createElement('input', { 'data-braintree-name': 'cardholder_name', placeholder: 'John Smith',
             onChange: _PaymentFormActions2.default.updateFullName,
             value: fullName }),
-          _react2.default.createElement(
-            'label',
-            null,
-            'Credit Card Number:'
-          ),
-          _react2.default.createElement('input', { 'data-braintree-name': 'number', placeholder: '4111-1111-1111-1111',
-            onChange: _PaymentFormActions2.default.updateCreditCardNumber,
-            value: creditCardNumber,
-            maxLength: '19' }),
-          _react2.default.createElement(
-            'label',
-            null,
-            'CVV:'
-          ),
-          _react2.default.createElement('input', { 'data-braintree-name': 'cvv', placeholder: '100',
-            onChange: _PaymentFormActions2.default.updateCVV,
-            value: cvv,
-            maxLength: '4' }),
-          _react2.default.createElement(
-            'label',
-            null,
-            'Expiration Date:'
-          ),
-          _react2.default.createElement('input', { 'data-braintree-name': 'expiration_date', placeholder: '10/20',
-            onChange: _PaymentFormActions2.default.updateExpirationDate,
-            value: expirationDate,
-            maxLength: '5' }),
           _react2.default.createElement(
             'label',
             null,
@@ -836,11 +770,14 @@ var PaymentFormNonce = function (_React$Component) {
         window.braintree.setup(clientToken, "dropin", {
           container: "payment-form",
           onPaymentMethodReceived: function onPaymentMethodReceived(obj) {
+            console.log(obj.details);
             var nonce = obj.nonce;
             if (nonce) {
-              console.log(obj.nonce);
               _PaymentFormActions2.default.addPaymentNonce(obj.nonce);
             }
+          },
+          onError: function onError(obj) {
+            console.log(obj);
           }
         });
       });
@@ -868,7 +805,7 @@ var PaymentFormNonce = function (_React$Component) {
             'form',
             { id: 'checkout' },
             _react2.default.createElement('div', { id: 'payment-form' }),
-            _react2.default.createElement('input', { type: 'submit', value: 'Pay' })
+            _react2.default.createElement('input', { type: 'submit', value: 'Validate' })
           )
         ),
         _react2.default.createElement('script', { src: 'https://js.braintreegateway.com/js/braintree-2.21.0.min.js' })
@@ -1102,12 +1039,6 @@ var PaymentFormNonceStore = function () {
     value: function onAddClientTokenFail(data) {
       toastr.error(data.responseText);
     }
-  }, {
-    key: 'onAddPaymentNonce',
-    value: function onAddPaymentNonce(nonce) {
-      this.nonce = nonce;
-      console.log("nonce added");
-    }
   }]);
 
   return PaymentFormNonceStore;
@@ -1141,9 +1072,6 @@ var PaymentFormStore = function () {
     _classCallCheck(this, PaymentFormStore);
 
     this.bindActions(_PaymentFormActions2.default);
-    this.creditCardNumber = '';
-    this.cvv = '';
-    this.expirationDate = '';
     this.fullName = '';
     this.paymentAmount = '';
     this.postalCode = '';
@@ -1153,11 +1081,7 @@ var PaymentFormStore = function () {
   _createClass(PaymentFormStore, [{
     key: 'onAddCreateTransactionSuccess',
     value: function onAddCreateTransactionSuccess(data) {
-      console.log(data);
       // remove the cc info from state;
-      this.creditCardNumber = '';
-      this.cvv = '';
-      this.expirationDate = '';
       this.fullName = '';
       this.paymentAmount = '';
       this.postalCode = '';

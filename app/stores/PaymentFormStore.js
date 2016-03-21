@@ -4,9 +4,6 @@ import PaymentFormActions from '../actions/PaymentFormActions';
 class PaymentFormStore {
   constructor() {
     this.bindActions(PaymentFormActions);
-    this.creditCardNumber = '';
-    this.cvv = '';
-    this.expirationDate = '';
     this.fullName = '';
     this.paymentAmount = '';
     this.postalCode = '';
@@ -14,11 +11,7 @@ class PaymentFormStore {
   }
 
   onAddCreateTransactionSuccess(data){
-    console.log(data);
     // remove the cc info from state;
-    this.creditCardNumber = '';
-    this.cvv = '';
-    this.expirationDate = '';
     this.fullName = '';
     this.paymentAmount = '';
     this.postalCode = '';

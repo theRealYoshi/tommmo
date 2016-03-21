@@ -19,11 +19,14 @@ class PaymentFormNonce extends React.Component  {
       window.braintree.setup(clientToken, "dropin", {
         container: "payment-form",
         onPaymentMethodReceived: function (obj) {
+          console.log(obj.details);
           var nonce = obj.nonce;
           if (nonce){
-            console.log(obj.nonce);
             PaymentFormActions.addPaymentNonce(obj.nonce);
           }
+        },
+        onError: function(obj){
+          console.log(obj);
         }
       });
     });
@@ -43,7 +46,7 @@ class PaymentFormNonce extends React.Component  {
         <div className="paymentFormNonce">
           <form id="checkout">
             <div id="payment-form"></div>
-            <input type="submit" value="Pay"/>
+            <input type="submit" value="Validate"/>
           </form>
         </div>
         <script src="https://js.braintreegateway.com/js/braintree-2.21.0.min.js"></script>

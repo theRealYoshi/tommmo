@@ -64,9 +64,6 @@ class PaymentForm extends React.Component  {
     // do validations here or do the validations within the changed stated in react
     var paymentAmount = this.state.paymentAmount;
     var name = this.state.fullName;
-    var creditCardNumber = this.state.creditCardNumber;
-    var cvv = this.state.cvv;
-    var expirationDate = this.state.expirationDate;
     var fullName = this.state.fullName;
     var postalCode = this.state.postalCode;
     var nonce = this.state.nonce;
@@ -77,15 +74,6 @@ class PaymentForm extends React.Component  {
     } else if (fullName.length < 5 || fullName.split(" ").length != 2){
       console.log("fullname failed");
       PaymentFormActions.formValidationError("Please Enter a Valid Name");
-    } else if (creditCardNumber.length < 16){
-      console.log("cc failed");
-      PaymentFormActions.formValidationError("Please Enter a Valid Credit Card Number");
-    } else if (cvv.length < 3){
-      console.log("cvv failed");
-      PaymentFormActions.formValidationError("Please Enter a Valid CVV");
-    } else if (expirationDate.length < 4){
-      console.log("exp failed");
-      PaymentFormActions.formValidationError("Please Enter a Valid Expiration Date");
     } else if (postalCode.length < 5){
       console.log("postal failed");
       PaymentFormActions.formValidationError("Please Enter a Valid Postal Code");
@@ -93,50 +81,23 @@ class PaymentForm extends React.Component  {
       console.log("nonce failed");
       PaymentFormActions.formValidationError("Please Enter a Valid Credit Card");
     } else {
-      // var client = new window.braintree.api.Client({clientToken: this.state.clientToken});
-      client.tokenizeCard({
-        number: creditCardNumber / 100,
-        cardholderName: name,
-        expirationDate: expirationDate.slice(0,2) + "/" + expirationDate.slice(2),
-        cvv: cvv,
-        billingAddress: {
-          postalCode: postalCode
-        },
-        paymentInstrumentType: "credit_card"
-      }, function (err, nonce) {
-        // add error handler
-        console.log(nonce);
-        console.log("nonce created");
-        // Send nonce to your server
-        PaymentFormActions.createTransaction({
-            amount: paymentAmount,
-            nonce: nonce
-        }, function(err, success){
-          // redirect here
-        });
+      PaymentFormActions.createTransaction({
+        amount: paymentAmount,
+        nonce: nonce
+      }, function(err, success){
+        console.log("done");
       });
     }
   }
 
   render() {
-    var creditCardNumber, expirationDate, paymentAmount;
+    var paymentAmount;
     if (this.state.paymentAmount){
       paymentAmount = this._formattedPaymentAmount();
     } else {
       paymentAmount = "";
     }
     var fullName = this.state.fullName;
-    if (this.state.creditCardNumber){
-      creditCardNumber = this._formattedCreditCardNumber();
-    } else {
-      creditCardNumber = "";
-    }
-    var cvv = this.state.cvv;
-    if (this.state.expirationDate){
-      expirationDate = this._formattedExpirationDate();
-    } else {
-      expirationDate = "";
-    }
     var postalCode = this.state.postalCode;
 
     return (
@@ -150,24 +111,6 @@ class PaymentForm extends React.Component  {
             <input data-braintree-name="cardholder_name" placeholder="John Smith"
               onChange={PaymentFormActions.updateFullName}
               value={fullName}/>
-
-            <label>Credit Card Number:</label>
-            <input data-braintree-name="number" placeholder="4111-1111-1111-1111"
-              onChange={PaymentFormActions.updateCreditCardNumber}
-              value={creditCardNumber}
-              maxLength="19"/>
-
-            <label>CVV:</label>
-            <input data-braintree-name="cvv" placeholder="100"
-              onChange={PaymentFormActions.updateCVV}
-              value={cvv}
-              maxLength="4"/>
-
-            <label>Expiration Date:</label>
-            <input data-braintree-name="expiration_date" placeholder="10/20"
-              onChange={PaymentFormActions.updateExpirationDate}
-              value={expirationDate}
-              maxLength="5"/>
 
             <label>Postal Code:</label>
             <input data-braintree-name="postal_code" placeholder="94107"

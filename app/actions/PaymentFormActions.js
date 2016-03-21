@@ -17,7 +17,7 @@ class PaymentFormActions {
     );
   }
 
-  createTransaction(payload){
+  createTransaction(payload, cb){
     $.ajax({
       type: 'POST',
       url: '/api/braintree/transaction',
@@ -27,8 +27,8 @@ class PaymentFormActions {
             }
     })
     .done((data) => {
-      console.log("success");
       this.actions.addCreateTransactionSuccess(data);
+      cb();
       // set success parameters. Redirect?
     })
     .fail((data) => {

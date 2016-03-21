@@ -17,13 +17,19 @@ var bodyParser = require('body-parser');
 
 //braintree api
 var braintree = require("braintree");
-var gateway = braintree.connect({
+var gatewayTest = braintree.connect({
   environment: braintree.Environment.Sandbox,
   merchantId: "dh6g887kp8mz4qvw",
   publicKey: "x5kzks7rwmj2tjck",
   privateKey: "0a093d8816184f794acfe5eae3c099b3"
 });
-
+// differentiate between prod and test
+var gateway = braintree.connect({
+    environment:  braintree.Environment.Production,
+    merchantId:   'vdht9rjs5hqynn4v',
+    publicKey:    'jdndfsh2hvx7k4by',
+    privateKey:   'a5eb13aa771fd93b432383a03aeee7e8'
+});
 
 var app = express();
 
@@ -40,19 +46,12 @@ app.get("/api/braintree/client_token", function (req, res) {
   });
 });
 
-app.post("/api/braintree/paymentNonce", function(req, res){
-  debugger;
-  console.log(req);
-  var nonce = req.body.payment_method_nonce;
-  console.log(nonce);
-  res.status(200).send("nonce created");
-})
-
 app.post("/api/braintree/transaction",function (req, res) {
   var amount = req.body.amount / 100;
   // var nonceFromTheClient = "fake-valid-visa-nonce";
+  // var nonceFromTheClient = "fake-valid-amex-nonce";
+  // var nonceFromTheClient = "fake-valid-mastercard-nonce";
   var nonceFromTheClient = req.body.nonce;
-  console.log(nonceFromTheClient);
   gateway.transaction.sale({
     amount: amount,
     paymentMethodNonce: nonceFromTheClient,
