@@ -23,6 +23,7 @@ var gatewayTest = braintree.connect({
   publicKey: "x5kzks7rwmj2tjck",
   privateKey: "0a093d8816184f794acfe5eae3c099b3"
 });
+
 // differentiate between prod and test
 var gateway = braintree.connect({
     environment:  braintree.Environment.Production,

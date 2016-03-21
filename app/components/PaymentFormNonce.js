@@ -10,7 +10,6 @@ class PaymentFormNonce extends React.Component  {
     super(props);
     this.state = PaymentFormNonceStore.getState();
     this._onChange = this._onChange.bind(this);
-
   }
 
   componentDidMount() {

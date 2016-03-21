@@ -409,8 +409,65 @@ var Home = function (_React$Component) {
           _react2.default.createElement(
             'h1',
             null,
-            'Payment Form'
+            'Services Available:'
+          ),
+          _react2.default.createElement(
+            'ul',
+            null,
+            _react2.default.createElement(
+              'li',
+              null,
+              'Website Development Services - $1000+'
+            ),
+            _react2.default.createElement(
+              'li',
+              null,
+              'Marketing Analysis Consultancy Services - $1000+'
+            ),
+            _react2.default.createElement(
+              'li',
+              null,
+              'Digital Marketing Consultancy Services - $500+'
+            )
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            '*Prices vary depending on scope and complexity on a per project basis'
           )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'h1',
+            null,
+            'Contact Information:'
+          ),
+          _react2.default.createElement(
+            'ul',
+            null,
+            _react2.default.createElement(
+              'li',
+              null,
+              'Email: ',
+              _react2.default.createElement(
+                'a',
+                { href: 'mailto:support@tommmo.com' },
+                'support@tommmo.com'
+              )
+            ),
+            _react2.default.createElement(
+              'li',
+              null,
+              'Phone Number: 323-375-4476'
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'h1',
+          null,
+          'Payment Form'
         ),
         _react2.default.createElement(
           'div',
@@ -421,6 +478,114 @@ var Home = function (_React$Component) {
           'div',
           { className: 'row' },
           _react2.default.createElement(_PaymentForm2.default, null)
+        ),
+        _react2.default.createElement(
+          'button',
+          { type: 'button', className: 'btn btn-primary btn-lg', 'data-toggle': 'modal', 'data-target': '#refundPolicyModal' },
+          'Refund Policy'
+        ),
+        _react2.default.createElement(
+          'button',
+          { type: 'button', className: 'btn btn-primary btn-lg', 'data-toggle': 'modal', 'data-target': '#privacyPolicyModal' },
+          'Privacy Policy'
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'modal fade', id: 'refundPolicyModal', tabindex: '-1', role: 'dialog', 'aria-labelledby': 'refundPolicyLabel' },
+          _react2.default.createElement(
+            'div',
+            { className: 'modal-dialog', role: 'document' },
+            _react2.default.createElement(
+              'div',
+              { className: 'modal-content' },
+              _react2.default.createElement(
+                'div',
+                { className: 'modal-header' },
+                _react2.default.createElement(
+                  'button',
+                  { type: 'button', className: 'close', 'data-dismiss': 'modal', 'aria-label': 'Close' },
+                  _react2.default.createElement(
+                    'span',
+                    { 'aria-hidden': 'true' },
+                    '×'
+                  )
+                ),
+                _react2.default.createElement(
+                  'h4',
+                  { className: 'modal-title', id: 'refundPolicyLabel' },
+                  'Modal title'
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'modal-body' },
+                '...'
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'modal-footer' },
+                _react2.default.createElement(
+                  'button',
+                  { type: 'button', className: 'btn btn-default', 'data-dismiss': 'modal' },
+                  'Close'
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { type: 'button', className: 'btn btn-primary' },
+                  'Save changes'
+                )
+              )
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'modal fade', id: 'privacyPolicyModal', tabindex: '-1', role: 'dialog', 'aria-labelledby': 'privacyPolicyModal' },
+          _react2.default.createElement(
+            'div',
+            { className: 'modal-dialog', role: 'document' },
+            _react2.default.createElement(
+              'div',
+              { className: 'modal-content' },
+              _react2.default.createElement(
+                'div',
+                { className: 'modal-header' },
+                _react2.default.createElement(
+                  'button',
+                  { type: 'button', className: 'close', 'data-dismiss': 'modal', 'aria-label': 'Close' },
+                  _react2.default.createElement(
+                    'span',
+                    { 'aria-hidden': 'true' },
+                    '×'
+                  )
+                ),
+                _react2.default.createElement(
+                  'h4',
+                  { className: 'modal-title', id: 'privacyPolicyModal' },
+                  'Modal title'
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'modal-body' },
+                '...'
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'modal-footer' },
+                _react2.default.createElement(
+                  'button',
+                  { type: 'button', className: 'btn btn-default', 'data-dismiss': 'modal' },
+                  'Close'
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { type: 'button', className: 'btn btn-primary' },
+                  'Save changes'
+                )
+              )
+            )
+          )
         )
       );
     }
@@ -514,7 +679,7 @@ var Navbar = function (_React$Component) {
           _react2.default.createElement(
             _reactRouter.Link,
             { to: '/', className: 'navbar-brand' },
-            'Payment Site'
+            'DBA: Yoshihiro Luk'
           )
         )
       );
@@ -758,7 +923,6 @@ var PaymentFormNonce = function (_React$Component) {
 
     _this.state = _PaymentFormNonceStore2.default.getState();
     _this._onChange = _this._onChange.bind(_this);
-
     return _this;
   }
 
