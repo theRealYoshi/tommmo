@@ -15,10 +15,14 @@ class PaymentFormStore {
     this.fullName = '';
     this.paymentAmount = '';
     this.postalCode = '';
+    data.history.pushState(null, "/paymentConfirm");
   }
 
   onAddCreateTransactionFail(data){
     toastr.error(data.responseText);
+    setTimeout(function(){
+      window.location.reload();
+    }, 3000);
   }
 
   onAddPaymentNonce(nonce){
@@ -28,33 +32,6 @@ class PaymentFormStore {
 
   onFormValidationError(data){
     toastr.error(data);
-  }
-
-  onUpdateCreditCardNumber(event){
-    var cc = event.target.value.replace(/[^\d]/g,"");
-    if(isNaN(cc) || cc == this.creditCardNumber){
-      toastr.error("Please enter numbers only");
-    } else {
-      this.creditCardNumber = cc;
-    }
-  }
-
-  onUpdateCVV(event){
-    var cvv = event.target.value.replace(/[^\d]/g,"");
-    if(isNaN(cvv) || cvv == this.cvv){
-      toastr.error("Please enter numbers only");
-    } else {
-      this.cvv = cvv;
-    }
-  }
-
-  onUpdateExpirationDate(event){
-    var exp = event.target.value.replace(/[^\d]/g,"");
-    if(isNaN(exp) || exp == this.expirationDate){
-      toastr.error("Please enter numbers only");
-    } else {
-      this.expirationDate = exp;
-    }
   }
 
   onUpdateFullName(event){

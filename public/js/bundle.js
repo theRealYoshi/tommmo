@@ -87,9 +87,9 @@ var PaymentFormActions = function () {
           nonce: payload.nonce
         }
       }).done(function (data) {
+        data.history = payload.history;
         _this.actions.addCreateTransactionSuccess(data);
         cb();
-        // set success parameters. Redirect?
       }).fail(function (data) {
         console.log("fail");
         _this.actions.addCreateTransactionFail(data);
@@ -477,7 +477,7 @@ var Home = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { className: 'row' },
-          _react2.default.createElement(_PaymentForm2.default, null)
+          _react2.default.createElement(_PaymentForm2.default, { history: this.props.history })
         ),
         _react2.default.createElement(
           'button',
@@ -792,7 +792,7 @@ var Home = function (_React$Component) {
 
 exports.default = Home;
 
-},{"../actions/HomeActions":1,"../stores/HomeStore":14,"./PaymentForm":10,"./PaymentFormNonce":11,"react":"react","react-router":"react-router","underscore":"underscore"}],9:[function(require,module,exports){
+},{"../actions/HomeActions":1,"../stores/HomeStore":15,"./PaymentForm":11,"./PaymentFormNonce":12,"react":"react","react-router":"react-router","underscore":"underscore"}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -887,7 +887,58 @@ var Navbar = function (_React$Component) {
 
 exports.default = Navbar;
 
-},{"../actions/NavbarActions":2,"../stores/NavbarStore":15,"react":"react","react-router":"react-router"}],10:[function(require,module,exports){
+},{"../actions/NavbarActions":2,"../stores/NavbarStore":16,"react":"react","react-router":"react-router"}],10:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// import PaymentConfirmStore from '../stores/PaymentConfirmStore';
+// import PaymentConfirmActions from '../actions/PaymentConfirmActions';
+
+var PaymentConfirm = function (_React$Component) {
+  _inherits(PaymentConfirm, _React$Component);
+
+  function PaymentConfirm(props) {
+    _classCallCheck(this, PaymentConfirm);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(PaymentConfirm).call(this, props));
+  }
+
+  _createClass(PaymentConfirm, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        'this is the confirm page'
+      );
+    }
+  }]);
+
+  return PaymentConfirm;
+}(_react2.default.Component);
+
+exports.default = PaymentConfirm;
+
+},{"react":"react","react-router":"react-router"}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1011,12 +1062,8 @@ var PaymentForm = function (_React$Component) {
       } else {
         _PaymentFormActions2.default.createTransaction({
           amount: paymentAmount,
-          nonce: nonce
-        }, function (err, success) {
-          // redirect to thank you page
-          console.log(err);
-          console.log(success);
-          console.log("done");
+          nonce: nonce,
+          history: this.props.history
         });
       }
     }
@@ -1077,7 +1124,7 @@ var PaymentForm = function (_React$Component) {
 
 exports.default = PaymentForm;
 
-},{"../actions/PaymentFormActions":3,"../stores/PaymentFormStore":17,"react":"react","react-router":"react-router"}],11:[function(require,module,exports){
+},{"../actions/PaymentFormActions":3,"../stores/PaymentFormStore":18,"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1181,7 +1228,7 @@ var PaymentFormNonce = function (_React$Component) {
 
 exports.default = PaymentFormNonce;
 
-},{"../actions/PaymentFormActions":3,"../actions/PaymentFormNonceActions":4,"../stores/PaymentFormNonceStore":16,"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
+},{"../actions/PaymentFormActions":3,"../actions/PaymentFormNonceActions":4,"../stores/PaymentFormNonceStore":17,"react":"react","react-router":"react-router"}],13:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -1214,7 +1261,7 @@ _reactDom2.default.render(_react2.default.createElement(
   _routes2.default
 ), document.getElementById('app'));
 
-},{"./routes":13,"history/lib/createBrowserHistory":26,"react":"react","react-dom":"react-dom","react-router":"react-router"}],13:[function(require,module,exports){
+},{"./routes":14,"history/lib/createBrowserHistory":27,"react":"react","react-dom":"react-dom","react-router":"react-router"}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1235,15 +1282,20 @@ var _Home = require('./components/Home');
 
 var _Home2 = _interopRequireDefault(_Home);
 
+var _PaymentConfirm = require('./components/PaymentConfirm');
+
+var _PaymentConfirm2 = _interopRequireDefault(_PaymentConfirm);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _react2.default.createElement(
   _reactRouter.Route,
   { component: _App2.default },
-  _react2.default.createElement(_reactRouter.Route, { path: '/', component: _Home2.default })
+  _react2.default.createElement(_reactRouter.Route, { path: '/', component: _Home2.default }),
+  _react2.default.createElement(_reactRouter.Route, { path: '/paymentConfirm', component: _PaymentConfirm2.default })
 );
 
-},{"./components/App":6,"./components/Home":8,"react":"react","react-router":"react-router"}],14:[function(require,module,exports){
+},{"./components/App":6,"./components/Home":8,"./components/PaymentConfirm":10,"react":"react","react-router":"react-router"}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1270,7 +1322,7 @@ var HomeStore = function HomeStore() {
 
 exports.default = _alt2.default.createStore(HomeStore);
 
-},{"../actions/HomeActions":1,"../alt":5}],15:[function(require,module,exports){
+},{"../actions/HomeActions":1,"../alt":5}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1362,7 +1414,7 @@ var NavbarStore = function () {
 
 exports.default = _alt2.default.createStore(NavbarStore);
 
-},{"../actions/NavbarActions":2,"../alt":5}],16:[function(require,module,exports){
+},{"../actions/NavbarActions":2,"../alt":5}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1409,7 +1461,7 @@ var PaymentFormNonceStore = function () {
 
 exports.default = _alt2.default.createStore(PaymentFormNonceStore);
 
-},{"../actions/PaymentFormNonceActions":4,"../alt":5}],17:[function(require,module,exports){
+},{"../actions/PaymentFormNonceActions":4,"../alt":5}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1448,11 +1500,15 @@ var PaymentFormStore = function () {
       this.fullName = '';
       this.paymentAmount = '';
       this.postalCode = '';
+      data.history.pushState(null, "/paymentConfirm");
     }
   }, {
     key: 'onAddCreateTransactionFail',
     value: function onAddCreateTransactionFail(data) {
       toastr.error(data.responseText);
+      setTimeout(function () {
+        window.location.reload();
+      }, 3000);
     }
   }, {
     key: 'onAddPaymentNonce',
@@ -1464,36 +1520,6 @@ var PaymentFormStore = function () {
     key: 'onFormValidationError',
     value: function onFormValidationError(data) {
       toastr.error(data);
-    }
-  }, {
-    key: 'onUpdateCreditCardNumber',
-    value: function onUpdateCreditCardNumber(event) {
-      var cc = event.target.value.replace(/[^\d]/g, "");
-      if (isNaN(cc) || cc == this.creditCardNumber) {
-        toastr.error("Please enter numbers only");
-      } else {
-        this.creditCardNumber = cc;
-      }
-    }
-  }, {
-    key: 'onUpdateCVV',
-    value: function onUpdateCVV(event) {
-      var cvv = event.target.value.replace(/[^\d]/g, "");
-      if (isNaN(cvv) || cvv == this.cvv) {
-        toastr.error("Please enter numbers only");
-      } else {
-        this.cvv = cvv;
-      }
-    }
-  }, {
-    key: 'onUpdateExpirationDate',
-    value: function onUpdateExpirationDate(event) {
-      var exp = event.target.value.replace(/[^\d]/g, "");
-      if (isNaN(exp) || exp == this.expirationDate) {
-        toastr.error("Please enter numbers only");
-      } else {
-        this.expirationDate = exp;
-      }
     }
   }, {
     key: 'onUpdateFullName',
@@ -1542,7 +1568,7 @@ var PaymentFormStore = function () {
 
 exports.default = _alt2.default.createStore(PaymentFormStore);
 
-},{"../actions/PaymentFormActions":3,"../alt":5}],18:[function(require,module,exports){
+},{"../actions/PaymentFormActions":3,"../alt":5}],19:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -1638,7 +1664,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":19,"./lib/keys.js":20}],19:[function(require,module,exports){
+},{"./lib/is_arguments.js":20,"./lib/keys.js":21}],20:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -1660,7 +1686,7 @@ function unsupported(object){
     false;
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -1671,7 +1697,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -1703,7 +1729,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1730,7 +1756,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -1802,7 +1828,7 @@ function readState(key) {
 }
 }).call(this,require('_process'))
 
-},{"_process":35,"warning":36}],24:[function(require,module,exports){
+},{"_process":36,"warning":37}],25:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1883,13 +1909,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2071,7 +2097,7 @@ exports['default'] = createBrowserHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./Actions":21,"./DOMStateStorage":23,"./DOMUtils":24,"./ExecutionEnvironment":25,"./createDOMHistory":27,"./parsePath":32,"_process":35,"invariant":34}],27:[function(require,module,exports){
+},{"./Actions":22,"./DOMStateStorage":24,"./DOMUtils":25,"./ExecutionEnvironment":26,"./createDOMHistory":28,"./parsePath":33,"_process":36,"invariant":35}],28:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2115,7 +2141,7 @@ exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./DOMUtils":24,"./ExecutionEnvironment":25,"./createHistory":28,"_process":35,"invariant":34}],28:[function(require,module,exports){
+},{"./DOMUtils":25,"./ExecutionEnvironment":26,"./createHistory":29,"_process":36,"invariant":35}],29:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -2407,7 +2433,7 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-},{"./Actions":21,"./AsyncUtils":22,"./createLocation":29,"./deprecate":30,"./parsePath":32,"./runTransitionHook":33,"deep-equal":18}],29:[function(require,module,exports){
+},{"./Actions":22,"./AsyncUtils":23,"./createLocation":30,"./deprecate":31,"./parsePath":33,"./runTransitionHook":34,"deep-equal":19}],30:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -2462,7 +2488,7 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-},{"./Actions":21,"./parsePath":32}],30:[function(require,module,exports){
+},{"./Actions":22,"./parsePath":33}],31:[function(require,module,exports){
 //import warning from 'warning'
 
 "use strict";
@@ -2478,7 +2504,7 @@ function deprecate(fn) {
 
 exports["default"] = deprecate;
 module.exports = exports["default"];
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2492,7 +2518,7 @@ function extractPath(string) {
 
 exports["default"] = extractPath;
 module.exports = exports["default"];
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2540,7 +2566,7 @@ exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./extractPath":31,"_process":35,"warning":36}],33:[function(require,module,exports){
+},{"./extractPath":32,"_process":36,"warning":37}],34:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2568,7 +2594,7 @@ exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"_process":35,"warning":36}],34:[function(require,module,exports){
+},{"_process":36,"warning":37}],35:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -2624,7 +2650,7 @@ module.exports = invariant;
 
 }).call(this,require('_process'))
 
-},{"_process":35}],35:[function(require,module,exports){
+},{"_process":36}],36:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -2717,7 +2743,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -2782,7 +2808,7 @@ module.exports = warning;
 
 }).call(this,require('_process'))
 
-},{"_process":35}]},{},[12])
+},{"_process":36}]},{},[13])
 
 
 //# sourceMappingURL=bundle.js.map

@@ -83,12 +83,8 @@ class PaymentForm extends React.Component  {
     } else {
       PaymentFormActions.createTransaction({
         amount: paymentAmount,
-        nonce: nonce
-      }, function(err, success){
-        // redirect to thank you page
-        console.log(err);
-        console.log(success);
-        console.log("done");
+        nonce: nonce,
+        history: this.props.history
       });
     }
   }

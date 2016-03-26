@@ -50,7 +50,7 @@ class Home extends React.Component {
           <PaymentFormNonce />
         </div>
         <div className='row'>
-          <PaymentForm />
+          <PaymentForm history={this.props.history}/>
         </div>
         <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#refundPolicyModal">
           Refund Policy

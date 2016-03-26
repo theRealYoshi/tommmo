@@ -27,9 +27,9 @@ class PaymentFormActions {
             }
     })
     .done((data) => {
+      data.history = payload.history;
       this.actions.addCreateTransactionSuccess(data);
       cb();
-      // set success parameters. Redirect?
     })
     .fail((data) => {
       console.log("fail");

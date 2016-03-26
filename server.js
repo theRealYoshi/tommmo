@@ -14,7 +14,6 @@ var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
-
 //braintree api
 var braintree = require("braintree");
 var gatewayTest = braintree.connect({
@@ -42,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get("/api/braintree/client_token", function (req, res) {
-  gateway.clientToken.generate({}, function (err, response) {
+  gatewayTest.clientToken.generate({}, function (err, response) {
     res.send(response.clientToken);
   });
 });
@@ -53,7 +52,7 @@ app.post("/api/braintree/transaction",function (req, res) {
   // var nonceFromTheClient = "fake-valid-amex-nonce";
   // var nonceFromTheClient = "fake-valid-mastercard-nonce";
   var nonceFromTheClient = req.body.nonce;
-  gateway.transaction.sale({
+  gatewayTest.transaction.sale({
     amount: amount,
     paymentMethodNonce: nonceFromTheClient,
     options: {
@@ -62,7 +61,8 @@ app.post("/api/braintree/transaction",function (req, res) {
   }, function (err, result) {
     console.log(result);
     if (!err && result.success){
-      res.status(200).send(result.transaction.amount + " was charged");
+      console.log("payment submitted");
+      res.status(200).send({message: result.transaction.amount + " was charged"});
     } else {
       console.log(result.message);
       res.status(406).send(result.message);
