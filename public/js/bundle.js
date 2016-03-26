@@ -1013,6 +1013,9 @@ var PaymentForm = function (_React$Component) {
           amount: paymentAmount,
           nonce: nonce
         }, function (err, success) {
+          // redirect to thank you page
+          console.log(err);
+          console.log(success);
           console.log("done");
         });
       }
@@ -1165,7 +1168,7 @@ var PaymentFormNonce = function (_React$Component) {
             'form',
             { id: 'checkout' },
             _react2.default.createElement('div', { id: 'payment-form' }),
-            _react2.default.createElement('input', { type: 'submit', value: 'Validate' })
+            _react2.default.createElement('input', { type: 'submit', value: 'Enter Credit Card Information' })
           )
         ),
         _react2.default.createElement('script', { src: 'https://js.braintreegateway.com/js/braintree-2.21.0.min.js' })

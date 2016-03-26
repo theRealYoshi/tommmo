@@ -45,7 +45,7 @@ class PaymentFormNonce extends React.Component  {
         <div className="paymentFormNonce">
           <form id="checkout">
             <div id="payment-form"></div>
-            <input type="submit" value="Validate"/>
+            <input type="submit" value="Enter Credit Card Information"/>
           </form>
         </div>
         <script src="https://js.braintreegateway.com/js/braintree-2.21.0.min.js"></script>

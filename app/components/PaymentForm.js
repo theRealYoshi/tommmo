@@ -85,6 +85,9 @@ class PaymentForm extends React.Component  {
         amount: paymentAmount,
         nonce: nonce
       }, function(err, success){
+        // redirect to thank you page
+        console.log(err);
+        console.log(success);
         console.log("done");
       });
     }
