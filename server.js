@@ -13,7 +13,7 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var secrets = require('./secrets.js');
+var secrets = require('./secrets');
 
 //braintree api
 var btreeKeys = secrets.braintree;
