@@ -13,12 +13,11 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var secrets = require('./secrets');
-var braintree = require("braintree");
-
+var secrets = require('./secrets.js');
 
 //braintree api
 var btreeKeys = secrets.braintree;
+var braintree = require("braintree");
 if (btreeKeys.in_production){
   //get production gateway
   var braintreeEnvironment = braintree.Environment.Production;
