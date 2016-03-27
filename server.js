@@ -55,6 +55,7 @@ app.post("/api/braintree/transaction",function (req, res) {
   // var nonceFromTheClient = "fake-valid-amex-nonce";
   // var nonceFromTheClient = "fake-valid-mastercard-nonce";
   var nonceFromTheClient = req.body.nonce;
+  console.log(req.body);
   gateway.transaction.sale({
     amount: amount,
     paymentMethodNonce: nonceFromTheClient,
@@ -66,6 +67,7 @@ app.post("/api/braintree/transaction",function (req, res) {
       console.log("payment submitted");
       res.status(200).send({message: result.transaction.amount + " was charged"});
     } else {
+      console.log(err);
       res.status(406).send({message: result.message});
     }
   });
