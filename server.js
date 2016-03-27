@@ -13,23 +13,27 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var secrets = require('./secrets');
+var braintree = require("braintree");
+
 
 //braintree api
-var braintree = require("braintree");
-var gatewayTest = braintree.connect({
-  environment: braintree.Environment.Sandbox,
-  merchantId: "dh6g887kp8mz4qvw",
-  publicKey: "x5kzks7rwmj2tjck",
-  privateKey: "0a093d8816184f794acfe5eae3c099b3"
-});
+var btreeKeys = secrets.braintree;
+if (btreeKeys.in_production){
+  //get production gateway
+  var braintreeEnvironment = braintree.Environment.Production;
+  var braintreeMode = btreeKeys.production;
+} else {
+  var braintreeEnvironment = braintree.Environment.Sandbox;
+  var braintreeMode = btreeKeys.sandbox;
+}
 
-// differentiate between prod and test
 var gateway = braintree.connect({
-    environment:  braintree.Environment.Production,
-    merchantId:   'vdht9rjs5hqynn4v',
-    publicKey:    'jdndfsh2hvx7k4by',
-    privateKey:   'a5eb13aa771fd93b432383a03aeee7e8'
-});
+  environment:  braintreeEnvironment,
+  merchantId:   braintreeMode.merchantId,
+  publicKey:    braintreeMode.publicKey,
+  privateKey:   braintreeMode.privateKey
+})
 
 var app = express();
 
@@ -41,7 +45,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get("/api/braintree/client_token", function (req, res) {
-  gatewayTest.clientToken.generate({}, function (err, response) {
+  gateway.clientToken.generate({}, function (err, response) {
     res.send(response.clientToken);
   });
 });
@@ -52,20 +56,18 @@ app.post("/api/braintree/transaction",function (req, res) {
   // var nonceFromTheClient = "fake-valid-amex-nonce";
   // var nonceFromTheClient = "fake-valid-mastercard-nonce";
   var nonceFromTheClient = req.body.nonce;
-  gatewayTest.transaction.sale({
+  gateway.transaction.sale({
     amount: amount,
     paymentMethodNonce: nonceFromTheClient,
     options: {
       submitForSettlement: true,
     }
   }, function (err, result) {
-    console.log(result);
     if (!err && result.success){
       console.log("payment submitted");
       res.status(200).send({message: result.transaction.amount + " was charged"});
     } else {
-      console.log(result.message);
-      res.status(406).send(result.message);
+      res.status(406).send({message: result.message});
     }
   });
 });

@@ -5,13 +5,12 @@ import {Link} from 'react-router';
 
 class PaymentConfirm extends React.Component  {
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
-      <div>this is the confirm page</div>
+      <div>
+        <h1>Thank you for your payment submission!</h1>
+        <p>For more information please visit <Link to="www.yoshihiroluk.co">www.yoshihiroluk.co</Link></p>
+      </div>
     );
   }
 }

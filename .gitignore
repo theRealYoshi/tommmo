@@ -37,3 +37,5 @@ bower_components
 public/css/*
 public/js/*
 
+#Braintree API Secrets
+secrets.js

@@ -20,7 +20,6 @@ class PaymentFormNonceActions {
     })
     .fail((data) => {
       this.actions.addClientTokenFail(data);
-      console.log("this did not work");
     });
   }
 

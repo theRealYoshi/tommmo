@@ -76,7 +76,7 @@ var PaymentFormActions = function () {
 
   _createClass(PaymentFormActions, [{
     key: 'createTransaction',
-    value: function createTransaction(payload, cb) {
+    value: function createTransaction(payload) {
       var _this = this;
 
       $.ajax({
@@ -87,11 +87,9 @@ var PaymentFormActions = function () {
           nonce: payload.nonce
         }
       }).done(function (data) {
-        data.history = payload.history;
+        data.history = payload.history; // allows access to redirect
         _this.actions.addCreateTransactionSuccess(data);
-        cb();
       }).fail(function (data) {
-        console.log("fail");
         _this.actions.addCreateTransactionFail(data);
       });
     }
@@ -141,7 +139,6 @@ var PaymentFormNonceActions = function () {
         setupDropinContainer(clientToken);
       }).fail(function (data) {
         _this.actions.addClientTokenFail(data);
-        console.log("this did not work");
       });
     }
   }]);
@@ -916,10 +913,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var PaymentConfirm = function (_React$Component) {
   _inherits(PaymentConfirm, _React$Component);
 
-  function PaymentConfirm(props) {
+  function PaymentConfirm() {
     _classCallCheck(this, PaymentConfirm);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(PaymentConfirm).call(this, props));
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(PaymentConfirm).apply(this, arguments));
   }
 
   _createClass(PaymentConfirm, [{
@@ -928,7 +925,21 @@ var PaymentConfirm = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
-        'this is the confirm page'
+        _react2.default.createElement(
+          'h1',
+          null,
+          'Thank you for your payment submission!'
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          'For more information please visit ',
+          _react2.default.createElement(
+            _reactRouter.Link,
+            { to: 'www.yoshihiroluk.co' },
+            'www.yoshihiroluk.co'
+          )
+        )
       );
     }
   }]);
@@ -1505,7 +1516,7 @@ var PaymentFormStore = function () {
   }, {
     key: 'onAddCreateTransactionFail',
     value: function onAddCreateTransactionFail(data) {
-      toastr.error(data.responseText);
+      toastr.error(data.message.responseText);
       setTimeout(function () {
         window.location.reload();
       }, 3000);

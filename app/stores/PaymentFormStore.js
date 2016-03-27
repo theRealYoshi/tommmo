@@ -19,7 +19,7 @@ class PaymentFormStore {
   }
 
   onAddCreateTransactionFail(data){
-    toastr.error(data.responseText);
+    toastr.error(data.message.responseText);
     setTimeout(function(){
       window.location.reload();
     }, 3000);
