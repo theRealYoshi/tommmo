@@ -1,5 +1,3 @@
-
-
 // Babel ES6/JSX Compiler
 require('babel-register');
 
@@ -13,26 +11,29 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var secrets = require('./secrets');
+require('dotenv').load();
 
 //braintree api
-var btreeKeys = secrets.braintree;
 var braintree = require("braintree");
-if (btreeKeys.in_production){
+if (process.env.BRAINTREE_IN_PRODUCTION){
   //get production gateway
   var braintreeEnvironment = braintree.Environment.Production;
-  var braintreeMode = btreeKeys.production;
+  var gateway = braintree.connect({
+    environment:  braintreeEnvironment,
+    merchantId:   process.env.BRAINTREE_PRODUCTION_MERCHANT_ID,
+    publicKey:    process.env.BRAINTREE_PRODUCTION_PUBLIC_KEY,
+    privateKey:   process.env.BRAINTREE_PRODUCTION_PRIVATE_KEY
+  })
 } else {
   var braintreeEnvironment = braintree.Environment.Sandbox;
-  var braintreeMode = btreeKeys.sandbox;
+  var gateway = braintree.connect({
+    environment:  braintreeEnvironment,
+    merchantId:   process.env.BRAINTREE_SANDBOX_MERCHANT_ID,
+    publicKey:    process.env.BRAINTREE_SANDBOX_PUBLIC_KEY,
+    privateKey:   process.env.BRAINTREE_SANDBOX_PRIVATE_KEY
+  })
 }
 
-var gateway = braintree.connect({
-  environment:  braintreeEnvironment,
-  merchantId:   braintreeMode.merchantId,
-  publicKey:    braintreeMode.publicKey,
-  privateKey:   braintreeMode.privateKey
-})
 
 var app = express();
 
