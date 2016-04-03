@@ -15,7 +15,7 @@ require('dotenv').load();
 
 //braintree api
 var braintree = require("braintree");
-if (process.env.BRAINTREE_IN_PRODUCTION){
+if (process.env.BRAINTREE_IN_PRODUCTION === "production"){
   //get production gateway
   var braintreeEnvironment = braintree.Environment.Production;
   var gateway = braintree.connect({
@@ -52,9 +52,6 @@ app.get("/api/braintree/client_token", function (req, res) {
 
 app.post("/api/braintree/transaction",function (req, res) {
   var amount = req.body.amount / 100;
-  // var nonceFromTheClient = "fake-valid-visa-nonce";
-  // var nonceFromTheClient = "fake-valid-amex-nonce";
-  // var nonceFromTheClient = "fake-valid-mastercard-nonce";
   var nonceFromTheClient = req.body.nonce;
   console.log(req.body);
   gateway.transaction.sale({
